@@ -2,10 +2,24 @@ use strict;
 use warnings;
 
 package MooseX::MethodAttributes;
+# ABSTRACT: code attribute introspection
 
 use Moose ();
 use Moose::Exporter;
 use Moose::Util::MetaRole;
+
+=head1 SYNOPSIS
+
+    package MyClass;
+
+    use Moose;
+    use MooseX::MethodAttributes;
+
+    sub foo : Bar Baz('corge') { ... }
+
+    my $attrs = MyClass->meta->get_method('foo')->attributes; # ["Bar", "Baz('corge')"]
+
+=cut
 
 Moose::Exporter->setup_import_methods;
 
