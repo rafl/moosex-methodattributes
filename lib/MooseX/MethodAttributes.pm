@@ -24,6 +24,12 @@ use Moose::Util::MetaRole;
 This module allows code attributes of methods to be introspected using the
 Moose meta method objects.
 
+=begin Pod::Coverage
+
+init_meta
+
+=end Pod::Coverage
+
 =cut
 
 Moose::Exporter->setup_import_methods;
