@@ -24,4 +24,15 @@ has _method_attribute_map => (
     default => sub { +{} },
 );
 
+sub register_method_attributes {
+    my ($self, $code, $attrs) = @_;
+    $self->_method_attribute_map->{ 0 + $code } = $attrs;
+    return;
+}
+
+sub get_method_attributes {
+    my ($self, $code) = @_;
+    return $self->_method_attribute_map->{ 0 + $code };
+}
+
 1;
