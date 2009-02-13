@@ -21,8 +21,8 @@ use Moose::Util::MetaRole;
 
 =head1 DESCRIPTION
 
-This module allows code attributes of methods to be introspected using the
-Moose meta method objects.
+This module allows code attributes of methods to be introspected using Moose
+meta method objects.
 
 =begin Pod::Coverage
 
