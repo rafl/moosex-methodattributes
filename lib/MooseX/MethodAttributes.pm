@@ -19,6 +19,11 @@ use Moose::Util::MetaRole;
 
     my $attrs = MyClass->meta->get_method('foo')->attributes; # ["Bar", "Baz('corge')"]
 
+=head1 DESCRIPTION
+
+This module allows code attributes of methods to be introspected using the
+Moose meta method objects.
+
 =cut
 
 Moose::Exporter->setup_import_methods;
