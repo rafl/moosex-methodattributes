@@ -5,7 +5,7 @@ use MooseX::Types::Moose qw/HashRef/;
 
 use namespace::clean -except => 'meta';
 
-has attributes_for => (
+has _attributes_for => (
     is => 'ro',
     isa => HashRef,
     lazy => 1,

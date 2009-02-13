@@ -12,7 +12,7 @@ has attributes => (
 
 sub _build_attributes {
     my ($self) = @_;
-    return delete $self->associated_metaclass->attributes_for->{ 0 + $self->body };
+    return delete $self->associated_metaclass->_attributes_for->{ 0 + $self->body };
 }
 
 1;
