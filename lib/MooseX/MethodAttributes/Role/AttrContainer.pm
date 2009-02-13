@@ -8,7 +8,7 @@ use namespace::clean -except => 'meta';
 
 sub MODIFY_CODE_ATTRIBUTES {
     my ($class, $code, @attrs) = @_;
-    find_meta($class)->_attributes_for->{0 + $code} = \@attrs;
+    find_meta($class)->_method_attribute_map->{0 + $code} = \@attrs;
     return ();
 }
 
