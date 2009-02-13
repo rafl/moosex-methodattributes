@@ -1,3 +1,4 @@
 .*
 !.gitignore
 MooseX-MethodAttributes-*
+Debian_CPANTS.txt
