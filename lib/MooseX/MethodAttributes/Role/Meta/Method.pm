@@ -26,7 +26,7 @@ captured in the associated meta class.
 
 sub _build_attributes {
     my ($self) = @_;
-    return delete $self->associated_metaclass->_method_attribute_map->{ 0 + $self->body };
+    return $self->associated_metaclass->get_method_attributes($self->body);
 }
 
 1;
