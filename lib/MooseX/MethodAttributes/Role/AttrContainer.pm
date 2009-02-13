@@ -1,4 +1,5 @@
 package MooseX::MethodAttributes::Role::AttrContainer;
+# ABSTRACT: Capture code attributes in the class' metaclass
 
 use Moose::Role;
 use Moose::Util qw/find_meta/;
