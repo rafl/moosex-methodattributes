@@ -1,4 +1,5 @@
 package MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped;
+# ABSTRACT: proxy attributes of wrapped methods if their metaclass supports it
 
 use Moose::Role;
 use Moose::Util qw/does_role/;
