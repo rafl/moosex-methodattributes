@@ -3,7 +3,8 @@ use warnings;
 
 package BaseClass;
 
-use base qw/MooseX::MethodAttributes::Inheritable/;
+use Moose;
+BEGIN { extends qw/MooseX::MethodAttributes::Inheritable/; }
 
 sub foo : Foo {}
 
