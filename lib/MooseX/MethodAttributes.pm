@@ -41,7 +41,7 @@ sub init_meta {
         for_class                      => $options{for_class},
         metaclass_roles                => ['MooseX::MethodAttributes::Role::Meta::Class'],
         method_metaclass_roles         => ['MooseX::MethodAttributes::Role::Meta::Method'],
-        wrapped_method_metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Method::Wrapped'],
+        wrapped_method_metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped'],
     );
     Moose::Util::MetaRole::apply_base_class_roles(
         for_class => $options{for_class},

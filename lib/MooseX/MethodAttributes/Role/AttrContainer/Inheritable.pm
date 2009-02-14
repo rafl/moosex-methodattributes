@@ -25,7 +25,7 @@ before MODIFY_CODE_ATTRIBUTES => sub {
         for_class                      => $class,
         metaclass_roles                => ['MooseX::MethodAttributes::Role::Meta::Class'],
         method_metaclass_roles         => ['MooseX::MethodAttributes::Role::Meta::Method'],
-        wrapped_method_metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Method::Wrapped'],
+        wrapped_method_metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped'],
     );
 };
 
