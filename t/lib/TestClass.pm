@@ -5,6 +5,8 @@ use MooseX::MethodAttributes;
 
 sub foo : SomeAttribute AnotherAttribute('with argument') {}
 
+after foo => sub {};
+
 package SubClass;
 
 use Moose;
