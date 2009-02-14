@@ -1,2 +1,10 @@
+0.02  Sat, 14 Feb 2009 22:17:56 +0100
+  * Depend on Moose 0.70 for wrapped_method_metaclass_roles support.
+  * Apply a role to wrapped method metaclasses to support getting
+    attributes of wrapped methods.
+  * Add MooseX::MethodAttributes::Inherited as a way of capturing method
+    attributes without explicitly using MooseX::MethodAttributes in every
+    class.
+
 0.01  Fri, 13 Feb 2009 22:21:11 +0100
   * Initial release.
