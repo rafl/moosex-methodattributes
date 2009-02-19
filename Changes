@@ -1,3 +1,6 @@
+0.03  Thu, 19 Feb 2009 08:13:18 +0100
+  * Implement metaclass methods for getting all meta methods with attributes.
+
 0.02  Sat, 14 Feb 2009 22:17:56 +0100
   * Depend on Moose 0.70 for wrapped_method_metaclass_roles support.
   * Apply a role to wrapped method metaclasses to support getting
