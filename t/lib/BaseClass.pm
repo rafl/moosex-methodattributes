@@ -8,6 +8,8 @@ BEGIN { extends qw/MooseX::MethodAttributes::Inheritable/; }
 
 sub moo : Moo {}
 
+sub affe : Birne {}
+
 sub foo : Foo {}
 
 sub bar : Baz {}

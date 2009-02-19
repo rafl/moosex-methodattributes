@@ -21,7 +21,8 @@ is_deeply(
 
 is_deeply(
     [map { [$_->name => $_->attributes] } SubClass->meta->get_all_methods_with_attributes],
-    [['foo', ['Foo']],
+    [['affe', ['Birne']],
+     ['foo', ['Foo']],
      ['moo', ['Moo']],
      ['bar', ['Bar']]],
 );
