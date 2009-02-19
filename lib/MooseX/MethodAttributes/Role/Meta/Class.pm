@@ -45,6 +45,13 @@ sub get_method_attributes {
     return $self->_method_attribute_map->{ 0 + $code };
 }
 
+=method get_method_with_attributes_list
+
+Gets the list of meta methods for local methods of this class that have
+attributes in the order they have been registered.
+
+=cut
+
 sub get_method_with_attributes_list {
     my ($self) = @_;
     my @methods = values %{ $self->get_method_map };
@@ -66,6 +73,14 @@ sub get_method_with_attributes_list {
             : ()
     } @methods;
 }
+
+=method get_all_methods_with_attributes
+
+Gets the list of meta methods of local and inherited methods of this class,
+that have attributes. Baseclass methods come before subclass methods. Methods
+of one class have the order they have been declared in.
+
+=cut
 
 sub get_all_methods_with_attributes {
     my ($self) = @_;
