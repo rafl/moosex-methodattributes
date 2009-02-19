@@ -16,4 +16,9 @@ sub attributes {
     return $self->get_original_method->attributes;
 }
 
+sub _get_attributed_coderef {
+    my ($self) = @_;
+    return $self->get_original_method->_get_attributed_coderef;
+}
+
 1;

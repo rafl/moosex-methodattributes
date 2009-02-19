@@ -26,7 +26,12 @@ captured in the associated meta class.
 
 sub _build_attributes {
     my ($self) = @_;
-    return $self->associated_metaclass->get_method_attributes($self->body);
+    return $self->associated_metaclass->get_method_attributes($self->_get_attributed_coderef);
+}
+
+sub _get_attributed_coderef {
+    my ($self) = @_;
+    return $self->body;
 }
 
 1;
