@@ -71,7 +71,7 @@ sub get_method_with_attributes_list {
         exists $self->_method_attribute_map->{$addr}
             ? [$addr, $_]
             : ()
-    } @methods;
+    } grep { $_->can('_get_attributed_coderef') } @methods;
 }
 
 =method get_all_methods_with_attributes
