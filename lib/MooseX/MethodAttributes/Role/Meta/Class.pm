@@ -2,6 +2,7 @@ package MooseX::MethodAttributes::Role::Meta::Class;
 # ABSTRACT: metaclass role for storing code attributes
 
 use Moose::Role;
+use Moose::Util qw/find_meta/;
 use MooseX::Types::Moose qw/HashRef ArrayRef Str Int/;
 
 use namespace::clean -except => 'meta';
@@ -42,6 +43,43 @@ Get a list of attributes associated with a coderef.
 sub get_method_attributes {
     my ($self, $code) = @_;
     return $self->_method_attribute_map->{ 0 + $code };
+}
+
+sub get_method_with_attributes_list {
+    my ($self) = @_;
+    my @methods = values %{ $self->get_method_map };
+    my %order;
+
+    {
+        my $i = 0;
+        $order{$_} = $i++ for @{ $self->_method_attribute_list };
+    }
+
+    return map {
+        $_->[1]
+    } sort {
+        $order{ $a->[0] } <=> $order{ $b->[0] }
+    } map {
+        my $addr = 0 + $_->_get_attributed_coderef;
+        exists $self->_method_attribute_map->{$addr}
+            ? [$addr, $_]
+            : ()
+    } @methods;
+}
+
+sub get_all_methods_with_attributes {
+    my ($self) = @_;
+    my %seen;
+
+    return reverse grep {
+        !$seen{ $_->name }++
+    } reverse map {
+        my $meth;
+        my $meta = find_meta($_);
+        ($meta && ($meth = $meta->can('get_method_with_attributes_list')))
+            ? $meta->$meth
+            : ()
+    } reverse $self->linearized_isa
 }
 
 1;
