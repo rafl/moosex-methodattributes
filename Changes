@@ -1,3 +1,8 @@
+0.04  Thu, 26 Feb 2009 22:47:18 +0100
+  * Depend on an MX::Types version with support for parameterisation.
+  * Add tests for behaviour of get_all_methods_with_attributes and method
+    modifiers.
+
 0.03  Thu, 19 Feb 2009 08:13:18 +0100
   * Implement metaclass methods for getting all meta methods with attributes.
 
