@@ -7,13 +7,15 @@ use Moose::Role;
 package BaseClass;
 
 use Moose;
-BEGIN { extends qw/MooseX::MethodAttributes::Inheritable/; }
-
 use Moose::Util::MetaRole;
-Moose::Util::MetaRole::apply_metaclass_roles(
-    for_class => __PACKAGE__,
-    metaclass_roles => [qw/ BaseClass::Meta::Role /],
-);
+BEGIN { 
+    Moose::Util::MetaRole::apply_metaclass_roles(
+        for_class => __PACKAGE__,
+        metaclass_roles => [qw/ BaseClass::Meta::Role /],
+    );
+
+    extends qw/MooseX::MethodAttributes::Inheritable/;
+}
 
 sub moo : Moo {}
 
