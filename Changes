@@ -1,5 +1,7 @@
+0.05  Wed,  1 Apr 2009 21:40:05 + 0100
   * Ensure that we have an initialised metaclass to apply roles to in
-    AttrContainer::Inheritable
+    AttrContainer::Inheritable, fixing bugs with non-moose base classes
+    which have not has a metaclass initialised for them.
 
 0.04  Thu, 26 Feb 2009 22:47:18 +0100
   * Depend on an MX::Types version with support for parameterisation.
