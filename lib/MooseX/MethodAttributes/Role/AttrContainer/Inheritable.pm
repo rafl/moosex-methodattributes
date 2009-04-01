@@ -21,6 +21,8 @@ before MODIFY_CODE_ATTRIBUTES => sub {
     my ($class) = @_;
     my $meta = find_meta($class);
     return if $meta && does_role($meta, 'MooseX::MethodAttributes::Role::Meta::Class');
+    Moose->init_meta( for_class => $class )
+        unless $meta;
     Moose::Util::MetaRole::apply_metaclass_roles(
         for_class                      => $class,
         metaclass_roles                => ['MooseX::MethodAttributes::Role::Meta::Class'],
