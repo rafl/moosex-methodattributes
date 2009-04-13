@@ -7,7 +7,7 @@ package MooseX::MethodAttributes::Inheritable;
     use base qw/MooseX::MethodAttributes::Inheritable/;
 
     package SubClass;
-    use base qw/SubClass/;
+    use base qw/BaseClass/;
 
     sub foo : Bar {}
 
