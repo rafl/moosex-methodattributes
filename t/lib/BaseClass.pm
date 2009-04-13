@@ -8,7 +8,7 @@ package BaseClass;
 
 use Moose;
 use Moose::Util::MetaRole;
-BEGIN { 
+BEGIN {
     Moose::Util::MetaRole::apply_metaclass_roles(
         for_class => __PACKAGE__,
         metaclass_roles => [qw/ BaseClass::Meta::Role /],
