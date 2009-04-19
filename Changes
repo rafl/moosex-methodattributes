@@ -1,3 +1,7 @@
+  * Fix bug when using base, as Moose doesn't automatically inherit the
+    method metaclass from your parent class unless you use the 'extends'
+    syntax.
+
 0.05  Wed,  1 Apr 2009 21:40:05 + 0100
   * Ensure that we have an initialised metaclass to apply roles to in
     AttrContainer::Inheritable, fixing bugs with non-moose base classes
