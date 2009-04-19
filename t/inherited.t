@@ -1,13 +1,21 @@
 use strict;
 use warnings;
-use Test::More tests => 4;
+use Test::More tests => 6;
 
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
 BEGIN { use_ok 'SubClass'; }
+BEGIN { use_ok 'SubClassMoosed'; }
 
 my $meta = SubClass->meta;
+
+my $meta2 = SubClassMoosed->meta;
+
+is_deeply(
+    $meta2->get_method('bar')->attributes,
+    ['Bar'],
+);
 
 is_deeply(
     $meta->get_method('bar')->attributes,

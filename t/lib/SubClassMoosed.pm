@@ -1,9 +1,10 @@
 use strict;
 use warnings;
 
-package SubClass;
+package SubClassMoosed;
 
 use base qw/BaseClass/;
+
 use Moose;
 
 sub bar : Bar {}
