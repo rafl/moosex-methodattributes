@@ -1,16 +1,33 @@
 use strict;
 use warnings;
-use Test::More tests => 6;
+use Test::More tests => 9;
 
 use FindBin;
 use lib "$FindBin::Bin/lib";
+
+use Moose::Util qw/does_role/;
 
 BEGIN { use_ok 'SubClass'; }
 BEGIN { use_ok 'SubClassMoosed'; }
 
 my $meta = SubClass->meta;
-
 my $meta2 = SubClassMoosed->meta;
+
+ok( does_role(
+        BaseClass->meta->method_metaclass
+        => 'MooseX::MethodAttributes::Role::Meta::Method'
+    ) => 'BaseClass does method meta role'
+);
+ok( does_role(
+        $meta->method_metaclass
+        => 'MooseX::MethodAttributes::Role::Meta::Method'
+    ) => 'SubClass does method meta role'
+);
+ok( does_role(
+        $meta2->method_metaclass
+        => 'MooseX::MethodAttributes::Role::Meta::Method'
+    ) => 'SubClassMoosed does method meta role'
+);
 
 is_deeply(
     $meta2->get_method('bar')->attributes,
