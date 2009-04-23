@@ -3,11 +3,11 @@ use warnings;
 
 package SubClass;
 
-use base qw/BaseClass/;
+use Moose;
+BEGIN { extends 'BaseClass'; }
 
 sub bar : Bar {}
 
-use Moose;
 before affe => sub {};
 no Moose;
 
