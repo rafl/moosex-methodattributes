@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-package SubClassMoosed;
+package SubClassUseBaseAndUseMoose;
 
 use base qw/BaseClass/;
 

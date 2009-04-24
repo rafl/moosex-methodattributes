@@ -8,10 +8,10 @@ use lib "$FindBin::Bin/lib";
 use Moose::Util qw/does_role/;
 
 BEGIN { use_ok 'SubClass'; }
-BEGIN { use_ok 'SubClassMoosed'; }
+BEGIN { use_ok 'SubClassUseBaseAndUseMoose'; }
 
 my $meta = SubClass->meta;
-my $meta2 = SubClassMoosed->meta;
+my $meta2 = SubClassUseBaseAndUseMoose->meta;
 
 ok( does_role(
         BaseClass->meta->method_metaclass
@@ -26,7 +26,7 @@ ok( does_role(
 ok( does_role(
         $meta2->method_metaclass
         => 'MooseX::MethodAttributes::Role::Meta::Method'
-    ) => 'SubClassMoosed does method meta role'
+    ) => 'SubClassUseBaseAndUseMoose does method meta role'
 );
 
 is_deeply(
