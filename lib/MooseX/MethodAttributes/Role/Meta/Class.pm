@@ -108,25 +108,30 @@ For example, given:
 
     sub foo : Attr {}
 
+    sub bar : Attr {}
+
     package SubClass;
     use base qw/BaseClass/;
 
     sub foo {}
 
+    after bar => sub {}
+
 C<< SubClass->meta->get_all_methods_with_attributes >> will return 
 C<< BaseClass->meta->get_method('foo') >> for the above example, but
-this method will not.
+this method will not, and will return the wrapped bar method, wheras
+C<< get_all_methods_with_attributes >> will return the original method.
 
 =cut
 
 sub get_nearest_methods_with_attributes {
     my ($self) = @_;
     
-    grep {
+    map {
         my $m = $self->find_method_by_name($_->name);
         my $meth = $m->can('attributes');
         my $attrs = $meth ? $m->$meth() : [];
-        scalar @{ $attrs };
+        scalar @{ $attrs } ? ( $m ) : ( );
     } $self->get_all_methods_with_attributes;
 }
 
