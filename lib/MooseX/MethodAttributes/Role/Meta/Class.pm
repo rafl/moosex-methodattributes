@@ -122,8 +122,11 @@ this method will not.
 sub get_nearest_methods_with_attributes {
     my ($self) = @_;
     
-    grep { 
-        scalar @{ $self->find_method_by_name($_->name)->attributes }
+    grep {
+        my $m = $self->find_method_by_name($_->name);
+        my $meth = $m->can('attributes');
+        my $attrs = $meth ? $m->$meth() : [];
+        scalar @{ $attrs };
     } $self->get_all_methods_with_attributes;
 }
 
