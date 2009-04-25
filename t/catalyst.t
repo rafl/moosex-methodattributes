@@ -2,11 +2,13 @@
     package Catalyst::Controller;
     use Moose;
     use namespace::clean -except => 'meta';
-    BEGIN { extends qw/MooseX::MethodAttributes::Inheritable/; }
+    use MooseX::MethodAttributes;
+    BEGIN { extends 'MooseX::MethodAttributes::Inheritable'; }
 }
 {
     package TestApp::Controller::Moose;
     use Moose;
+    use MooseX::MethodAttributes;
     use namespace::clean -except => 'meta';
     BEGIN { extends qw/Catalyst::Controller/; }
 
@@ -18,11 +20,11 @@
 {
     package TestApp::Controller::Moose::MethodModifiers;
     use Moose;
+    use MooseX::MethodAttributes;
     BEGIN { extends qw/TestApp::Controller::Moose/; }
 
     our $GET_ATTRIBUTE_CALLED = 0;
-# FIXME - This borks things even more. Why?
-#    after get_attribute => sub { $GET_ATTRIBUTE_CALLED++; }; # Wrapped only, should show up
+    after get_attribute => sub { $GET_ATTRIBUTE_CALLED++; }; # Wrapped only, should show up
 
     sub other : Local {}
     after other => sub {}; # Wrapped, wrapped should show up.
