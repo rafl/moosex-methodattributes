@@ -1,3 +1,6 @@
+0.07  Sat, 25 Apr 2009 13:47:05 + 0100
+  * Add the get_nearest_methods_with_attributes method.
+
 0.06  Sun, 19 Apr 2009 23:03:06 + 0100
   * Fix bug when using base, as Moose doesn't automatically inherit the
     method metaclass from your parent class unless you use the 'extends'
