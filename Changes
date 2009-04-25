@@ -1,3 +1,9 @@
+0.08  Sat, 25 Apr 2009 16:30:00 + 0100
+  * Fix get_nearest_methods_with_attributes to deal with wrapped methods.
+    - Add tests for this, and how Catalyst uses the module
+  * Add TODO tests showing that method metaclass inheritance (or lacktherof)
+    into subclasses causes us to fail to do the right thing.
+
 0.07  Sat, 25 Apr 2009 13:47:05 + 0100
   * Add the get_nearest_methods_with_attributes method.
 
