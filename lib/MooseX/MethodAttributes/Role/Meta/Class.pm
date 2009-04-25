@@ -97,4 +97,36 @@ sub get_all_methods_with_attributes {
     } reverse $self->linearized_isa
 }
 
+=method get_all_methods_with_attributes_filtered
+
+Takes the output of the get_all_methods_with_attributes list, and for each method,
+checks if there is a method nearer in the inheritance hierarchy which does not
+have any attributes, and if such a method is present, removes the method from the list.
+
+For example, given:
+
+    package BaseClass;
+
+    sub foo : Attr {}
+
+    package SubClass;
+    use base qw/BaseClass/;
+
+    sub foo {}
+
+C<< SubClass->meta->get_all_methods_with_attributes >> will return 
+C<< BaseClass->meta->get_method('foo') >> for the above example, but
+this method will not.
+
+=cut
+
+sub get_all_methods_with_attributes_filtered {
+    my ($self) = @_;
+    
+    grep { 
+        scalar @{ $self->find_method_by_name($_->name)->attributes }
+    } $self->get_all_methods_with_attributes;
+}
+
 1;
+
