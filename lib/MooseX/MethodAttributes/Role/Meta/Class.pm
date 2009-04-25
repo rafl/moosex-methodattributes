@@ -119,7 +119,7 @@ this method will not.
 
 =cut
 
-sub get_all_methods_with_attributes_filtered {
+sub get_nearest_methods_with_attributes {
     my ($self) = @_;
     
     grep { 
