@@ -42,7 +42,7 @@ Get a list of attributes associated with a coderef.
 
 sub get_method_attributes {
     my ($self, $code) = @_;
-    return $self->_method_attribute_map->{ 0 + $code };
+    return $self->_method_attribute_map->{ 0 + $code } || [];
 }
 
 =method get_method_with_attributes_list
