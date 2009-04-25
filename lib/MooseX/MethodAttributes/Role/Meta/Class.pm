@@ -97,11 +97,10 @@ sub get_all_methods_with_attributes {
     } reverse $self->linearized_isa
 }
 
-=method get_all_methods_with_attributes_filtered
+=method get_nearest_methods_with_attributes
 
-Takes the output of the get_all_methods_with_attributes list, and for each method,
-checks if there is a method nearer in the inheritance hierarchy which does not
-have any attributes, and if such a method is present, removes the method from the list.
+The same as get_all_methods_with_attributes, except that methods from parent classes
+are not included if there is an attributeless method in a child class.
 
 For example, given:
 

@@ -22,7 +22,7 @@ ok $bar_method;
 isnt $bar_method, SubClass->meta->get_method('bar');
 is $bar_method, TestClass->meta->get_method('bar');
 
-my @methods_filtered = SubClass->meta->get_all_methods_with_attributes_filtered;
+my @methods_filtered = SubClass->meta->get_nearest_methods_with_attributes;
 is( scalar(@methods_filtered), (scalar(@methods)-1) );
 
 my $no_bar_method = (grep { $_->name eq 'bar' } @methods_filtered)[0]; 
