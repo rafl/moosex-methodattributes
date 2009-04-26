@@ -2,7 +2,7 @@ package MooseX::MethodAttributes::Role::Meta::Class;
 # ABSTRACT: metaclass role for storing code attributes
 
 use Moose::Role;
-use Moose::Util qw/find_meta/;
+use Moose::Util qw/find_meta does_role/;
 use MooseX::Types::Moose qw/HashRef ArrayRef Str Int/;
 
 use namespace::clean -except => 'meta';
@@ -126,13 +126,32 @@ C<< get_all_methods_with_attributes >> will return the original method.
 
 sub get_nearest_methods_with_attributes {
     my ($self) = @_;
-    
+    warn("Get nearest methods with attributes for " . $self->name . "\n");
     map {
+        warn("  Find " . $_->name . "\n");
         my $m = $self->find_method_by_name($_->name);
         my $meth = $m->can('attributes');
         my $attrs = $meth ? $m->$meth() : [];
-        scalar @{ $attrs } ? ( $m ) : ( );
+        my $i = scalar @{ $attrs } ? ( $m ) : ( );
+        warn("    No attributes method\n") unless $i;
+        warn("    Has attributes method\n") if $i;
+        return $i;
     } $self->get_all_methods_with_attributes;
+}
+
+foreach my $type (qw/after before around/) {
+    after "add_${type}_method_modifier" => sub {
+        my ($meta, $method_name) = @_;
+        my $method = $meta->get_method($method_name);
+        warn("Added $type method modifier to " . $meta->name . " round $method_name");
+        if (
+            does_role($method->get_original_method, 'MooseX::MethodAttributes::Role::Meta::Method')
+            || does_role($method->get_original_method, 'MooseX::MethodAttributes::Role::Meta::Method::Wrapped')
+        ) { 
+            MooseX::MethodAttributes::Role::Meta::Method::Wrapped->meta->apply($method);
+            warn("Original method does MooseX::MethodAttributes::Role::Meta::Method");
+        }
+    }
 }
 
 1;

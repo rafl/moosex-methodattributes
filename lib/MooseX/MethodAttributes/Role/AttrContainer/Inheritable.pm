@@ -23,7 +23,8 @@ before MODIFY_CODE_ATTRIBUTES => sub {
 
     return if $meta
         && does_role($meta, 'MooseX::MethodAttributes::Role::Meta::Class')
-        && does_role($meta->method_metaclass, 'MooseX::MethodAttributes::Role::Meta::Method');
+        && does_role($meta->method_metaclass, 'MooseX::MethodAttributes::Role::Meta::Method')
+        && does_role($meta->wrapped_method_metaclass, 'MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped');
 
     Moose->init_meta( for_class => $class )
         unless $meta;

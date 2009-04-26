@@ -9,7 +9,11 @@ use namespace::clean -except => 'meta';
 
 override wrap => sub {
     my $self = super;
-    if (does_role($self->get_original_method, 'MooseX::MethodAttributes::Role::Meta::Method')) {
+    my $original_method = $self->get_original_method;
+    if (
+        does_role($original_method, 'MooseX::MethodAttributes::Role::Meta::Method')
+        || does_role($original_method, 'MooseX::MethodAttributes::Role::Meta::Method::Wrapped')
+    ) {
         MooseX::MethodAttributes::Role::Meta::Method::Wrapped->meta->apply($self);
     }
     return $self;

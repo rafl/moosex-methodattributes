@@ -28,8 +28,21 @@
     after other => sub {}; # Wrapped, wrapped should show up.
 }
 
-use Test::More tests => 10;
+use Test::More tests => 13;
 use Test::Exception;
+use Moose::Util qw/does_role/;
+
+my @base_class_methods = TestApp::Controller::Moose->meta->get_nearest_methods_with_attributes;
+
+use Data::Dumper;
+warn Dumper([map { $_->name } @base_class_methods]);
+
+is @base_class_methods, 2;
+ok does_role(TestApp::Controller::Moose->meta, 'MooseX::MethodAttributes::Role::Meta::Class');
+ok does_role(TestApp::Controller::Moose::MethodModifiers->meta, 'MooseX::MethodAttributes::Role::Meta::Class');
+
+my $wrapped_get_attribute = TestApp::Controller::Moose::MethodModifiers->meta->get_method('get_attribute');
+warn $wrapped_get_attribute;
 
 my @methods;
 lives_ok {
