@@ -20,7 +20,7 @@
     package TestApp::Controller::Moose::MethodModifiers;
     use Moose;
     BEGIN { extends qw/TestApp::Controller::Moose/; }
-
+    # Do not put any methods with attributes in this package.
     our $GET_ATTRIBUTE_CALLED = 0;
     after get_attribute => sub { $GET_ATTRIBUTE_CALLED++; }; # Wrapped only, should show up
 

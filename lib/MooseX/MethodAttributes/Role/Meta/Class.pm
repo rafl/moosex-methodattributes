@@ -138,15 +138,35 @@ sub get_nearest_methods_with_attributes {
 }
 
 foreach my $type (qw/after before around/) {
-    after "add_${type}_method_modifier" => sub {
-        my ($meta, $method_name) = @_;
+    around "add_${type}_method_modifier" => sub {
+        my $orig = shift;
+        my $meta = shift;
+        my ($method_name) = @_;
+    
+        unless(
+            does_role($meta, 'MooseX::MethodAttributes::Role::Meta::Class')
+            && does_role($meta->method_metaclass, 'MooseX::MethodAttributes::Role::Meta::Method')
+            && does_role($meta->wrapped_method_metaclass, 'MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped')
+        ) {
+    
+            Moose::Util::MetaRole::apply_metaclass_roles(
+                for_class                      => $meta->name,
+                metaclass_roles                => ['MooseX::MethodAttributes::Role::Meta::Class'],
+                method_metaclass_roles         => ['MooseX::MethodAttributes::Role::Meta::Method'],
+                wrapped_method_metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped'],
+            );
+            # Get replaced metaclass..
+            $meta = find_meta($meta->name);
+        }
+        my $code = $meta->$orig(@_);
         my $method = $meta->get_method($method_name);
         if (
             does_role($method->get_original_method, 'MooseX::MethodAttributes::Role::Meta::Method')
             || does_role($method->get_original_method, 'MooseX::MethodAttributes::Role::Meta::Method::Wrapped')
-        ) { 
+        ) {
             MooseX::MethodAttributes::Role::Meta::Method::Wrapped->meta->apply($method);
         }
+        return $code;
     }
 }
 
