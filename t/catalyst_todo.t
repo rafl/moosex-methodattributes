@@ -34,37 +34,27 @@ use Moose::Util qw/does_role/;
 
 my @base_class_methods = TestApp::Controller::Moose->meta->get_nearest_methods_with_attributes;
 
-use Data::Dumper;
-warn Dumper([map { $_->name } @base_class_methods]);
-
 is @base_class_methods, 2;
 ok does_role(TestApp::Controller::Moose->meta, 'MooseX::MethodAttributes::Role::Meta::Class');
 ok does_role(TestApp::Controller::Moose::MethodModifiers->meta, 'MooseX::MethodAttributes::Role::Meta::Class');
-
-my $wrapped_get_attribute = TestApp::Controller::Moose::MethodModifiers->meta->get_method('get_attribute');
-warn $wrapped_get_attribute;
 
 my @methods;
 lives_ok {
     @methods = TestApp::Controller::Moose::MethodModifiers->meta->get_nearest_methods_with_attributes;
 } 'Can get nearest methods';
 
-TODO: {
-    local $TODO = 'This should work, but does not, which is why modifiers fail in Cat';
+is @methods, 2;
 
-    is @methods, 2;
+my $method = (grep { $_->name eq 'get_attribute' } @methods)[0];
+ok $method;
+is eval { $method->body }, \&TestApp::Controller::Moose::MethodModifiers::get_attribute;
+is $TestApp::Controller::Moose::GET_ATTRIBUTE_CALLED, 0;
+is $TestApp::Controller::Moose::MethodModifiers::GET_ATTRIBUTE_CALLED, 0;
+eval { $method->body->(); };
+ok !$@;
+is $TestApp::Controller::Moose::GET_ATTRIBUTE_CALLED, 1;
+is $TestApp::Controller::Moose::MethodModifiers::GET_ATTRIBUTE_CALLED, 1;
 
-    my $method = (grep { $_->name eq 'get_attribute' } @methods)[0];
-    ok $method;
-    is eval { $method->body }, \&TestApp::Controller::Moose::MethodModifiers::get_attribute;
-    is $TestApp::Controller::Moose::GET_ATTRIBUTE_CALLED, 0;
-    is $TestApp::Controller::Moose::MethodModifiers::GET_ATTRIBUTE_CALLED, 0;
-    eval { $method->body->(); };
-    ok !$@;
-    is $TestApp::Controller::Moose::GET_ATTRIBUTE_CALLED, 1;
-    is $TestApp::Controller::Moose::MethodModifiers::GET_ATTRIBUTE_CALLED, 1;
-
-    my $other = (grep { $_->name eq 'other' } @methods)[0];
-    ok $other;
-}
+my $other = (grep { $_->name eq 'other' } @methods)[0];
+ok $other;
 

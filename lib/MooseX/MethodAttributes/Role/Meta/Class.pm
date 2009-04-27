@@ -69,9 +69,11 @@ sub get_method_with_attributes_list {
     } map {
         my $addr = 0 + $_->_get_attributed_coderef;
         exists $self->_method_attribute_map->{$addr}
-            ? [$addr, $_]
-            : ()
-    } grep { $_->can('_get_attributed_coderef') } @methods;
+        ? [$addr, $_]
+        : ()
+    } grep { 
+        $_->can('_get_attributed_coderef')
+    } @methods;
 }
 
 =method get_all_methods_with_attributes
@@ -94,7 +96,7 @@ sub get_all_methods_with_attributes {
         ($meta && ($meth = $meta->can('get_method_with_attributes_list')))
             ? $meta->$meth
             : ()
-    } reverse $self->linearized_isa
+    } reverse $self->linearized_isa;
 }
 
 =method get_nearest_methods_with_attributes
@@ -126,30 +128,24 @@ C<< get_all_methods_with_attributes >> will return the original method.
 
 sub get_nearest_methods_with_attributes {
     my ($self) = @_;
-    warn("Get nearest methods with attributes for " . $self->name . "\n");
-    map {
-        warn("  Find " . $_->name . "\n");
+    my @list = map {
         my $m = $self->find_method_by_name($_->name);
         my $meth = $m->can('attributes');
         my $attrs = $meth ? $m->$meth() : [];
-        my $i = scalar @{ $attrs } ? ( $m ) : ( );
-        warn("    No attributes method\n") unless $i;
-        warn("    Has attributes method\n") if $i;
-        return $i;
+        scalar @{ $attrs } ? ( $m ) : ( );
     } $self->get_all_methods_with_attributes;
+    return @list;
 }
 
 foreach my $type (qw/after before around/) {
     after "add_${type}_method_modifier" => sub {
         my ($meta, $method_name) = @_;
         my $method = $meta->get_method($method_name);
-        warn("Added $type method modifier to " . $meta->name . " round $method_name");
         if (
             does_role($method->get_original_method, 'MooseX::MethodAttributes::Role::Meta::Method')
             || does_role($method->get_original_method, 'MooseX::MethodAttributes::Role::Meta::Method::Wrapped')
         ) { 
             MooseX::MethodAttributes::Role::Meta::Method::Wrapped->meta->apply($method);
-            warn("Original method does MooseX::MethodAttributes::Role::Meta::Method");
         }
     }
 }
