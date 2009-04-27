@@ -1,3 +1,8 @@
+  * Use modifiers in the metaclass role to catch modifiers being applied
+    to subs, and apply our wrapped method role to the generated method
+    instance. This is horrible, but appears to be a sane way to avoid
+    that fact that method metaclasses applied to one class aren't inherited.
+
 0.08  Sat, 25 Apr 2009 16:30:00 + 0100
   * Fix get_nearest_methods_with_attributes to deal with wrapped methods.
     - Add tests for this, and how Catalyst uses the module
