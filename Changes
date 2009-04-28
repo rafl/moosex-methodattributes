@@ -1,3 +1,4 @@
+0.09  Tue, 28 Apr 2009 09:47:28 + 0100
   * Use modifiers in the metaclass role to catch modifiers being applied
     to subs, and apply our wrapped method role to the generated method
     instance. This is horrible, but appears to be a sane way to avoid
