@@ -1,19 +1,20 @@
 use strict;
 use warnings;
 use Test::More tests => 2;
-use Test::Exception;
 
-lives_ok {
+eval q{
     package FooBarBaz;
     use Moose::Role;
     use MooseX::MethodAttributes;
 };
+ok !$@;
 
-lives_ok {
+eval q{
     package FooBarBazQuux;
     use Moose::Role;
     use MooseX::MethodAttributes;
 
     sub foo : Bar { }
 };
+ok !$@;
 
