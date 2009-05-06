@@ -7,6 +7,7 @@ package MooseX::MethodAttributes;
 use Moose ();
 use Moose::Exporter;
 use Moose::Util::MetaRole;
+use Moose::Util qw/find_meta/;
 
 =head1 SYNOPSIS
 
@@ -36,7 +37,7 @@ Moose::Exporter->setup_import_methods;
 
 sub init_meta {
     my ($class, %options) = @_;
-    my $meta = Moose->init_meta(%options);
+    my $meta =find_meta($options{for_class}) || Moose->init_meta(%options);
     Moose::Util::MetaRole::apply_metaclass_roles(
         for_class                      => $options{for_class},
         metaclass_roles                => ['MooseX::MethodAttributes::Role::Meta::Class'],
@@ -46,7 +47,7 @@ sub init_meta {
     Moose::Util::MetaRole::apply_base_class_roles(
         for_class => $options{for_class},
         roles     => ['MooseX::MethodAttributes::Role::AttrContainer'],
-    );
+    ) unless $meta->isa('Moose::Meta::Role');
     return $meta;
 }
 
