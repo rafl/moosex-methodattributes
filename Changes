@@ -1,3 +1,4 @@
+0.10  Thu, 14 May 2009 00:08:30 + 0100
   * Stop non Moose classes which inherit MooseX::MethodAttributes::Inheritable
     and which define a sub meta from throwing an exception.
 
