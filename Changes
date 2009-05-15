@@ -1,30 +1,33 @@
-0.10  Thu, 14 May 2009 00:08:30 + 0100
+0.11  Fri, 15 May 2009 18:02:27 +0200
+  * Depend on Moose 079 to prevent metaclass incompatibility failure.
+
+0.10  Thu, 14 May 2009 00:08:30 +0100
   * Stop non Moose classes which inherit MooseX::MethodAttributes::Inheritable
     and which define a sub meta from throwing an exception.
 
-0.09  Tue, 28 Apr 2009 09:47:28 + 0100
+0.09  Tue, 28 Apr 2009 09:47:28 +0100
   * Use modifiers in the metaclass role to catch modifiers being applied
     to subs, and apply our wrapped method role to the generated method
     instance. This is horrible, but appears to be a sane way to avoid
     that fact that method metaclasses applied to one class aren't inherited.
 
-0.08  Sat, 25 Apr 2009 16:30:00 + 0100
+0.08  Sat, 25 Apr 2009 16:30:00 +0100
   * Fix get_nearest_methods_with_attributes to deal with wrapped methods.
     - Add tests for this, and how Catalyst uses the module
   * Add TODO tests showing that method metaclass inheritance (or lacktherof)
     into subclasses causes us to fail to do the right thing.
 
-0.07  Sat, 25 Apr 2009 13:47:05 + 0100
+0.07  Sat, 25 Apr 2009 13:47:05 +0100
   * Add the get_nearest_methods_with_attributes method.
 
-0.06  Sun, 19 Apr 2009 23:03:06 + 0100
+0.06  Sun, 19 Apr 2009 23:03:06 +0100
   * Fix bug when using base, as Moose doesn't automatically inherit the
     method metaclass from your parent class unless you use the 'extends'
     syntax.
   * Package on a different machine, due to reported unarchiving issues
     on win32.
 
-0.05  Wed,  1 Apr 2009 21:40:05 + 0100
+0.05  Wed,  1 Apr 2009 21:40:05 +0100
   * Ensure that we have an initialised metaclass to apply roles to in
     AttrContainer::Inheritable, fixing bugs with non-moose base classes
     which have not has a metaclass initialised for them.
