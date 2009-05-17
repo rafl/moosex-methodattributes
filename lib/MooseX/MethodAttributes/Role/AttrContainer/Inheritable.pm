@@ -19,7 +19,8 @@ use namespace::clean -except => 'meta';
 with 'MooseX::MethodAttributes::Role::AttrContainer';
 
 before MODIFY_CODE_ATTRIBUTES => sub {
-    my ($class) = @_;
+    my ($class, $code, @attrs) = @_;
+    return unless @attrs;
     my $meta = find_meta($class);
 
     return if $meta
