@@ -32,14 +32,23 @@ before 'apply' => sub {
         Moose::Util::MetaRole::apply_metaclass_roles(
             for_class => $thing->name,
             metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Class'],
+            method_metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Method'],
+            wrapped_method_metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped'],
         );
     }
     elsif ($thing->isa('Moose::Meta::Role')) {
-        # No need to interfear with normal composition
+        # No need to interfere with normal composition
     }
     else {
         croak("Composing " . __PACKAGE__ . " onto instances is unsupported");
     }
+};
+
+after 'apply' => sub {
+    my ($self, $thing) = @_;
+    # Note that the metaclass instance we started out with may have been turned
+    # into lies by the role application process, so we explicitly re-fetch it
+    # here.
     my $meta = find_meta($thing->name);
     push @{ $meta->_method_attribute_list }, @{ $self->_method_attribute_list };
     @{ $meta->_method_attribute_map }{ keys(%{ $self->_method_attribute_map }) }
