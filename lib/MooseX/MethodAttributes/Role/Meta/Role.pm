@@ -9,6 +9,29 @@ use Moose::Role;
 
 use namespace::clean -except => 'meta';
 
+=head1 SYNOPSIS
+
+    package MyRole;
+    use Moose::Role -traits => 'MooseX::MethodAttributes::Role::Meta::Role';
+
+    sub foo : Bar Baz('corge') { ... }
+
+    package MyClass
+    use Moose;
+
+    with 'MyRole';
+
+    my $attrs = MyClass->meta->get_method('foo')->attributes; # ["Bar", "Baz('corge')"]
+
+=head1 DESCRIPTION
+
+This module allows you to add code attributes to methods in Moose roles.
+
+These attributes can then be found later once the methods are composed
+into a class.
+
+=cut
+
 with qw/
     MooseX::MethodAttributes::Role::Meta::Map
 /;
