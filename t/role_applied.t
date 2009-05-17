@@ -13,8 +13,8 @@ use ClassUsingRoleWithAttributes;
 
 my $meta = ClassUsingRoleWithAttributes->meta;
 isa_ok($meta, 'Moose::Meta::Class');
-ok does_role($meta, 'MooseX::MethodAttributes::Role::Meta::Class'),
-    'metaclass does the role for metaclasses with attribute decorated methods';
+my @methods = $meta->get_all_methods_with_attributes;
+ok scalar(@methods), 'Have methods with attributes';
 
 my $foo = $meta->get_method('foo');
 ok $foo, 'Got foo method';
