@@ -15,9 +15,9 @@
     sub get_attribute : Local { $TestApp::Controller::Moose::GET_ATTRIBUTE_CALLED++ }
 
     sub get_foo : Local { $TestApp::Controller::Moose::GET_FOO_CALLED++ }
+    
     # Exactly the same as last test except for modifier here
     before 'get_foo' => sub { $TestApp::Controller::Moose::BEFORE_GET_FOO_CALLED++ };
-
     sub other : Local {}
 }
 {
@@ -45,8 +45,32 @@
     after other => sub {}; # Wrapped, wrapped should show up.
 }
 
-use Test::More tests => 15;
+use Test::More tests => 21;
 use Test::Exception;
+
+{
+    my $method = TestApp::Controller::Moose->meta->get_method('get_foo');
+    ok $method->meta->does_role('MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped'), 'Method metaclass for get_foo in ::Moose does role MaybeWrapped';
+    
+    $method = TestApp::Controller::Moose::MethodModifiers->meta->get_method('other');
+    ok $method->meta->does_role('MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped'), 'Method metaclass for other in ::Moose::MethodModifiers does role MaybeWrapped'
+}
+
+{
+    my @methods = TestApp::Controller::Moose->meta->get_all_methods_with_attributes;
+    my @local_methods = TestApp::Controller::Moose->meta->get_method_with_attributes_list;
+    is @methods, 3;
+    is @local_methods, 3;
+}
+
+
+{
+    my @methods;
+    my @methods = TestApp::Controller::Moose::MethodModifiers->meta->get_all_methods_with_attributes;
+    my @local_methods = TestApp::Controller::Moose::MethodModifiers->meta->get_method_with_attributes_list;
+    is @methods, 3;
+    is @local_methods, 3;
+}
 
 my @methods;
 lives_ok {
