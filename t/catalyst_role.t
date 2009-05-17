@@ -6,21 +6,31 @@
     BEGIN { extends 'MooseX::MethodAttributes::Inheritable'; }
 }
 {
+    package TestApp::ControllerRole;
+    use Moose::Role -traits => 'MooseX::MethodAttributes::Role::Meta::Role';
+    use namespace::clean -except => 'meta';
+
+    BEGIN { with 'MooseX::MethodAttributes::Role::AttrContainer' };
+    
+    sub get_attribute : Local { $TestApp::Controller::Moose::GET_ATTRIBUTE_CALLED++ }
+
+    sub get_foo : Local { $TestApp::Controller::Moose::GET_FOO_CALLED++ }
+    # Exactly the same as last test except for modifier here
+    before 'get_foo' => sub { $TestApp::Controller::Moose::BEFORE_GET_FOO_CALLED++ };
+
+    sub other : Local {}
+}
+{
     package TestApp::Controller::Moose;
     use Moose;
     use namespace::clean -except => 'meta';
     BEGIN { extends qw/Catalyst::Controller/; }
 
     our $GET_ATTRIBUTE_CALLED = 0;
-    sub get_attribute : Local { $GET_ATTRIBUTE_CALLED++ }
-
     our $GET_FOO_CALLED = 0;
     our $BEFORE_GET_FOO_CALLED = 0;
-    sub get_foo : Local { $GET_FOO_CALLED++ }
-    # Exactly the same as last test except for modifier here
-    before 'get_foo' => sub { $BEFORE_GET_FOO_CALLED++ };
 
-    sub other : Local {}
+    with 'TestApp::ControllerRole';
 }
 {
     package TestApp::Controller::Moose::MethodModifiers;
@@ -35,7 +45,7 @@
     after other => sub {}; # Wrapped, wrapped should show up.
 }
 
-use Test::More tests => 13;
+use Test::More tests => 15;
 use Test::Exception;
 
 my @methods;
@@ -47,13 +57,18 @@ is @methods, 3;
 
 my $method = (grep { $_->name eq 'get_attribute' } @methods)[0];
 ok $method;
-is $method->body, \&TestApp::Controller::Moose::MethodModifiers::get_attribute;
+is eval { $method->body }, \&TestApp::Controller::Moose::MethodModifiers::get_attribute;
 is $TestApp::Controller::Moose::GET_ATTRIBUTE_CALLED, 0;
 is $TestApp::Controller::Moose::MethodModifiers::GET_ATTRIBUTE_CALLED, 0;
 is $TestApp::Controller::Moose::GET_FOO_CALLED, 0;
 is $TestApp::Controller::Moose::BEFORE_GET_FOO_CALLED, 0;
-$method->body->();
-(grep { $_->name eq 'get_foo' } @methods)[0]->body->();
+
+eval { $method->body->() };
+ok !$@ or warn $@;
+
+eval { (grep { $_->name eq 'get_foo' } @methods)[0]->body->(); };
+ok !$@ or warn $@;
+
 is $TestApp::Controller::Moose::GET_ATTRIBUTE_CALLED, 1;
 is $TestApp::Controller::Moose::MethodModifiers::GET_ATTRIBUTE_CALLED, 1;
 is $TestApp::Controller::Moose::GET_FOO_CALLED, 1;
