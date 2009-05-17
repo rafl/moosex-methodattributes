@@ -2,7 +2,7 @@ package MooseX::MethodAttributes::Role::Meta::Role;
 # ABSTRACT: metarole role for storing code attributes
 
 use Moose::Util::MetaRole;
-use Moose::Util qw/find_meta/;
+use Moose::Util qw/find_meta ensure_all_roles/;
 use Carp qw/croak/;
 
 use Moose::Role;
@@ -12,6 +12,11 @@ use namespace::clean -except => 'meta';
 with qw/
     MooseX::MethodAttributes::Role::Meta::Map
 /;
+
+after 'initialize' => sub {
+    my ($self, $class, %args) = @_;
+    ensure_all_roles($class, 'MooseX::MethodAttributes::Role::AttrContainer');
+};
 
 around method_metaclass => sub {
     my $orig = shift;
@@ -37,7 +42,7 @@ before 'apply' => sub {
         );
     }
     elsif ($thing->isa('Moose::Meta::Role')) {
-        # No need to interfere with normal composition
+        # No need to interfere with normal composition?
     }
     else {
         croak("Composing " . __PACKAGE__ . " onto instances is unsupported");
