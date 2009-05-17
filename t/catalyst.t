@@ -8,7 +8,6 @@
 {
     package TestApp::Controller::Moose;
     use Moose;
-    use MooseX::MethodAttributes;
     use namespace::clean -except => 'meta';
     BEGIN { extends qw/Catalyst::Controller/; }
 
@@ -20,7 +19,7 @@
 {
     package TestApp::Controller::Moose::MethodModifiers;
     use Moose;
-    use MooseX::MethodAttributes;
+    use namespace::clean -except => 'meta';
     BEGIN { extends qw/TestApp::Controller::Moose/; }
 
     our $GET_ATTRIBUTE_CALLED = 0;

@@ -21,6 +21,7 @@
 {
     package TestApp::Controller::Moose::MethodModifiers;
     use Moose;
+    use namespace::clean -except => 'meta';
     BEGIN { extends qw/TestApp::Controller::Moose/; }
     # Do not put any methods with attributes in this package.
     our $GET_ATTRIBUTE_CALLED = 0;
