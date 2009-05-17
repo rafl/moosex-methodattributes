@@ -63,7 +63,6 @@ use Test::Exception;
 
 
 {
-    my @methods;
     my @methods = TestApp::Controller::Moose::MethodModifiers->meta->get_all_methods_with_attributes;
     my @local_methods = TestApp::Controller::Moose::MethodModifiers->meta->get_method_with_attributes_list;
     is @methods, 3;
