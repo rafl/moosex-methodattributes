@@ -10,8 +10,6 @@
     use Moose::Role -traits => 'MooseX::MethodAttributes::Role::Meta::Role';
     use namespace::clean -except => 'meta';
 
-    BEGIN { with 'MooseX::MethodAttributes::Role::AttrContainer' };
-    
     sub get_attribute : Local { $TestApp::Controller::Moose::GET_ATTRIBUTE_CALLED++ }
 
     sub get_foo : Local { $TestApp::Controller::Moose::GET_FOO_CALLED++ }
@@ -69,7 +67,7 @@ use Test::Exception;
     my @methods = TestApp::Controller::Moose::MethodModifiers->meta->get_all_methods_with_attributes;
     my @local_methods = TestApp::Controller::Moose::MethodModifiers->meta->get_method_with_attributes_list;
     is @methods, 3;
-    is @local_methods, 3;
+    is @local_methods, 1;
 }
 
 my @methods;
