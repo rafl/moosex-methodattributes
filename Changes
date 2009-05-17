@@ -1,3 +1,9 @@
+  * Do not apply metaclass roles unless needed.
+  * Add MooseX::MethodAttributes::Role::Meta::Role, for roles which
+    contain methods with attributes.
+  * Split attribute container functionality out into
+    MooseX::MethodAttributes::Role::Meta::Map.
+
 0.11  Fri, 15 May 2009 18:02:27 +0200
   * Depend on Moose 079 to prevent metaclass incompatibility failure.
 
