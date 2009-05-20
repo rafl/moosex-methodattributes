@@ -1,3 +1,6 @@
+use strict;
+use warnings;
+
 {
     package FirstRole;
     use Moose::Role -traits => 'MooseX::MethodAttributes::Role::Meta::Role';
@@ -6,17 +9,25 @@
     our $FOO_CALLED = 0;
     sub foo : Local { $FOO_CALLED++; }
     
-    our $BEFORE_FOO_CALLED = 0;
-    before 'foo' => sub { $BEFORE_FOO_CALLED++; };
-    
     our $BAR_CALLED = 0;
     sub bar : Local { $BAR_CALLED++; }
+
+    our $BEFORE_BAR_CALLED = 0;
+    before 'bar' => sub { $BEFORE_BAR_CALLED++; };
+
+    our $BAZ_CALLED = 0;
+    sub baz : Local { $BAZ_CALLED++; }
+
+    our $QUUX_CALLED = 0;
+    sub quux : Local { $QUUX_CALLED++; }
 }
 {
     package SecondRole;
     use Moose::Role;
     use namespace::clean -except => 'meta';
     with 'FirstRole';
+    our $BEFORE_BAZ_CALLED = 0;
+    before 'baz' => sub { $BEFORE_BAZ_CALLED++ };
 }
 {
     package MyClass;
@@ -24,33 +35,37 @@
     use namespace::clean -except => 'meta';
 
     with 'SecondRole';
-
+    our $BEFORE_QUUX_CALLED = 0;
+    before 'quux' => sub { $BEFORE_QUUX_CALLED++; };
 }
 
-use Test::More tests => 21;
+use Test::More tests => 23;
 use Test::Exception;
 
-{
-    my $method = FirstRole->meta->get_method('foo');
-    ok $method->meta->does_role('MooseX::MethodAttributes::Role::Meta::Method'), 'Method metaclass for foo in FirstRole does role';
-    
-    $method = FirstRole->meta->get_method('bar');
-    ok $method->meta->does_role('MooseX::MethodAttributes::Role::Meta::Method'), 'Method metaclass for bar in FirstRole does role'
+my @method_names = qw/foo bar baz quux/;
+
+foreach my $class (qw/FirstRole SecondRole MyClass/) {
+    foreach my $method_name (@method_names) {
+        my $method = $class->meta->get_method($method_name);
+        ok $method->meta->does_role('MooseX::MethodAttributes::Role::Meta::Method'), 
+            sprintf('Method metaclass for %s in %s does role', $method_name, $class);
+    }   
 }
-{
-    my $method = SecondRole->meta->get_method('foo');
-    ok $method->meta->does_role('MooseX::MethodAttributes::Role::Meta::Method'), 'Method metaclass for foo in SecondRole does role';
-    
-    $method = SecondRole->meta->get_method('bar');
-    ok $method->meta->does_role('MooseX::MethodAttributes::Role::Meta::Method'), 'Method metaclass for bar in SecondRole does role'
+
+foreach my $method_name (@method_names) {
+    lives_ok {
+        MyClass->$method_name();
+    } "Call $method_name method";
 }
-{
-    my $method = MyClass->meta->get_method('foo');
-    ok $method->meta->does_role('MooseX::MethodAttributes::Role::Meta::Method'), 'Method metaclass for foo in MyClass does role';
-    
-    $method = MyClass->meta->get_method('bar');
-    ok $method->meta->does_role('MooseX::MethodAttributes::Role::Meta::Method'), 'Method metaclass for bar in MyClass does role'
-}
+
+is $FirstRole::FOO_CALLED, 1, '->foo called once';
+is $FirstRole::BAR_CALLED, 1, '->bar called once';
+is $FirstRole::BAZ_CALLED, 1, '->baz called once';
+is $FirstRole::QUUX_CALLED, 1, '->quux called once';
+
+is $FirstRole::BEFORE_BAR_CALLED, 1, 'modifier for ->bar called once';
+is $SecondRole::BEFORE_BAZ_CALLED, 1, 'modifier for ->baz called once';
+is $MyClass::BEFORE_QUUX_CALLED, 1, 'modifier for ->quux called once';
 
 exit;
 

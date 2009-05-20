@@ -54,8 +54,8 @@ around method_metaclass => sub {
     )->name();
 };
 
-before 'apply' => sub {
-    my ($self, $thing) = @_;
+around 'apply' => sub {
+    my ($orig, $self, $thing) = @_;
     if ($thing->isa('Moose::Meta::Class')) {
         Moose::Util::MetaRole::apply_metaclass_roles(
             for_class => $thing->name,
@@ -66,21 +66,33 @@ before 'apply' => sub {
     }
     elsif ($thing->isa('Moose::Meta::Role')) {
         # No need to interfere with normal composition?
+        Moose::Util::MetaRole::apply_metaclass_roles(
+            for_class       => $thing->name,
+            metaclass_roles => [ __PACKAGE__ ],
+        );
+        warn("Apply to metaclass of " . $thing->name);
+        ensure_all_roles($thing->name, 
+            'MooseX::MethodAttributes::Role::AttrContainer',
+        );
     }
     else {
         croak("Composing " . __PACKAGE__ . " onto instances is unsupported");
     }
-};
-
-after 'apply' => sub {
-    my ($self, $thing) = @_;
+    
     # Note that the metaclass instance we started out with may have been turned
     # into lies by the role application process, so we explicitly re-fetch it
     # here.
+    warn("Thing is $thing " . $thing->name);
     my $meta = find_meta($thing->name);
+    warn("Meta is $meta");
+
+    my $ret = $self->$orig($meta);
+
     push @{ $meta->_method_attribute_list }, @{ $self->_method_attribute_list };
     @{ $meta->_method_attribute_map }{ keys(%{ $self->_method_attribute_map }) }
         = values %{ $self->_method_attribute_map };
+
+    return $ret;
 };
 
 1;
