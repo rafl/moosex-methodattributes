@@ -1,3 +1,6 @@
+  * Add support for composing a role containg methods with attributes into
+    another role.
+
 0.11_01  Sun, 17 May 2009 23:50:44 +0100
   * Do not apply metaclass roles unless needed.
   * Add MooseX::MethodAttributes::Role::Meta::Role, for roles which
