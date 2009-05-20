@@ -47,8 +47,16 @@ my @method_names = qw/foo bar baz quux/;
 foreach my $class (qw/FirstRole SecondRole MyClass/) {
     foreach my $method_name (@method_names) {
         my $method = $class->meta->get_method($method_name);
-        ok $method->meta->does_role('MooseX::MethodAttributes::Role::Meta::Method'), 
-            sprintf('Method metaclass for %s in %s does role', $method_name, $class);
+        ok(
+            (
+                $method->meta->does_role('MooseX::MethodAttributes::Role::Meta::Method')
+                or $method->meta->does_role('MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped')
+            ), 
+            sprintf(
+                'Method metaclass for %s in %s does role'
+                => $method_name, $class
+            )
+        );
     }   
 }
 
