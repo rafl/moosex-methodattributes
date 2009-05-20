@@ -56,7 +56,6 @@ around method_metaclass => sub {
 
 around 'apply' => sub {
     my ($orig, $self, $thing) = @_;
-    warn("Composing role onto " . $thing->name . "\n");
     if ($thing->isa('Moose::Meta::Class')) {
         Moose::Util::MetaRole::apply_metaclass_roles(
             for_class => $thing->name,
@@ -81,9 +80,7 @@ around 'apply' => sub {
     # Note that the metaclass instance we started out with may have been turned
     # into lies by the role application process, so we explicitly re-fetch it
     # here.
-    warn("Thing is $thing " . $thing->name . "\n");
     my $meta = find_meta($thing->name);
-    warn("Meta is $meta\n");
 
     my $ret = $self->$orig($meta);
 
