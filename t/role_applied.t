@@ -9,6 +9,8 @@ use Moose::Util qw/does_role/;
 
 use Test::More tests => 4;
 
+use MooseX::MethodAttributes ();
+
 use ClassUsingRoleWithAttributes;
 
 my $meta = ClassUsingRoleWithAttributes->meta;

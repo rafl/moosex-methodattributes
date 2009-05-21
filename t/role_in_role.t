@@ -1,9 +1,10 @@
 use strict;
 use warnings;
+use MooseX::MethodAttributes ();
 
 {
     package FirstRole;
-    use Moose::Role -traits => 'MooseX::MethodAttributes::Role::Meta::Role';
+    use Moose::Role -traits => 'MethodAttributes';
     use namespace::clean -except => 'meta';
 
     our $FOO_CALLED = 0;

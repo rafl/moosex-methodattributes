@@ -91,5 +91,10 @@ around 'apply' => sub {
     return $ret;
 };
 
+package # Hide from PAUSE
+    Moose::Meta::Role::Custom::Trait::MethodAttributes;
+
+sub register_implementation { 'MooseX::MethodAttributes::Role::Meta::Role' }
+
 1;
 

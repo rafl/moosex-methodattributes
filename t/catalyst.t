@@ -1,3 +1,5 @@
+use strict;
+use warnings;
 {
     package Catalyst::Controller;
     use Moose;

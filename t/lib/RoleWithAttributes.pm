@@ -1,5 +1,5 @@
 package RoleWithAttributes;
-use Moose::Role -traits => 'MooseX::MethodAttributes::Role::Meta::Role';
+use Moose::Role -traits => 'MethodAttributes';
 use namespace::clean -except => 'meta';
 
 sub foo : AnAttr { 'foo' }

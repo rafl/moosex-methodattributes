@@ -21,6 +21,9 @@ their code attributes captured.
 
 =cut
 
+# Ensure trait is registered
+use MooseX::MethodAttributes::Role::Meta::Role ();
+
 use Moose;
 
 use namespace::clean -except => 'meta';
@@ -29,4 +32,3 @@ with 'MooseX::MethodAttributes::Role::AttrContainer::Inheritable';
 
 __PACKAGE__->meta->make_immutable;
 
-1;

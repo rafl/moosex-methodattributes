@@ -7,6 +7,8 @@ package MooseX::MethodAttributes;
 use Moose ();
 use Moose::Exporter;
 use Moose::Util::MetaRole;
+# Ensure trait is registered
+use MooseX::MethodAttributes::Role::Meta::Role ();
 
 =head1 SYNOPSIS
 

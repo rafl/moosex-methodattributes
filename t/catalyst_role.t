@@ -1,3 +1,5 @@
+use strict;
+use warnings;
 {
     package Catalyst::Controller;
     use Moose;
@@ -7,7 +9,7 @@
 }
 {
     package TestApp::ControllerRole;
-    use Moose::Role -traits => 'MooseX::MethodAttributes::Role::Meta::Role';
+    use Moose::Role -traits => 'MethodAttributes';
     use namespace::clean -except => 'meta';
 
     sub get_attribute : Local { $TestApp::Controller::Moose::GET_ATTRIBUTE_CALLED++ }
