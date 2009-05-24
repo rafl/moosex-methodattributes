@@ -2,7 +2,7 @@ package MooseX::MethodAttributes::Role::Meta::Role;
 # ABSTRACT: metarole role for storing code attributes
 
 use Moose::Util::MetaRole;
-use Moose::Util qw/find_meta ensure_all_roles/;
+use Moose::Util qw/find_meta does_role ensure_all_roles/;
 use Carp qw/croak/;
 
 use Moose::Role;
@@ -57,6 +57,11 @@ around method_metaclass => sub {
 around 'apply' => sub {
     my ($orig, $self, $thing) = @_;
     if ($thing->isa('Moose::Meta::Class')) {
+        return if
+           does_role($thing, 'MooseX::MethodAttributes::Role::Meta::Class')
+        && does_role($thing->method_metaclass, 'MooseX::MethodAttributes::Role::Meta::Method')
+        && does_role($thing->wrapped_method_metaclass, 'MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped');
+        
         Moose::Util::MetaRole::apply_metaclass_roles(
             for_class => $thing->name,
             metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Class'],
