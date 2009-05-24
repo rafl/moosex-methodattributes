@@ -57,17 +57,18 @@ around method_metaclass => sub {
 around 'apply' => sub {
     my ($orig, $self, $thing) = @_;
     if ($thing->isa('Moose::Meta::Class')) {
-        return if
+        unless (
            does_role($thing, 'MooseX::MethodAttributes::Role::Meta::Class')
         && does_role($thing->method_metaclass, 'MooseX::MethodAttributes::Role::Meta::Method')
-        && does_role($thing->wrapped_method_metaclass, 'MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped');
+        && does_role($thing->wrapped_method_metaclass, 'MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped')) {
         
-        Moose::Util::MetaRole::apply_metaclass_roles(
-            for_class => $thing->name,
-            metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Class'],
-            method_metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Method'],
-            wrapped_method_metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped'],
-        );
+            Moose::Util::MetaRole::apply_metaclass_roles(
+                for_class => $thing->name,
+                metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Class'],
+                method_metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Method'],
+                wrapped_method_metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped'],
+            );
+        }
     }
     elsif ($thing->isa('Moose::Meta::Role')) {
         Moose::Util::MetaRole::apply_metaclass_roles(
