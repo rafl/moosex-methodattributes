@@ -1,3 +1,8 @@
+0.11_03  Mon, 25 May 2009 00:06:50 +0100
+  * Fix overenthusiastic meta trait application which caused
+    classes which already had methods with attributes to have their
+    attributes wiped out.
+
 0.11_02  Thu, 21 May 2009 01:46:47 +0100
   * Add support for use Moose::Role -traits => 'MethodAttributes
     if we've already been loaded.
