@@ -13,6 +13,8 @@ use warnings;
     package ControllerRole;
     use Moose::Role -traits => 'MethodAttributes';
     use namespace::clean -except => 'meta';
+
+    sub not_attributed : Local {} # This method should _not_ get composed.
 }
 {
     package roles::Controller::Foo;
@@ -22,15 +24,17 @@ use warnings;
     with 'ControllerRole';
 
     sub load : Chained('base') PathPart('') CaptureArgs(1) { }
-    
+
     sub base : Chained('/') PathPart('foo') CaptureArgs(0) { }
 
     sub entry : Chained('load') PathPart('') CaptureArgs(0) { }
 
     sub some_page : Chained('entry') { }
+
+    sub not_attributed {}
 }
 
-use Test::More tests => 8;
+use Test::More tests => 10;
 
 my $meta = roles::Controller::Foo->meta;
 my %expected = (
@@ -38,6 +42,7 @@ my %expected = (
     load => ["Chained('base')", "PathPart('')", "CaptureArgs(1)"],
     entry => ["Chained('load')", "PathPart('')", "CaptureArgs(0)"],
     some_page => ["Chained('entry')"],
+    not_attributed => [],
 );
 foreach my $method_name (keys %expected) {
     my $method = $meta->get_method($method_name);
@@ -46,4 +51,4 @@ foreach my $method_name (keys %expected) {
     is_deeply $attrs, $expected{$method_name},
         "Attributes on $method_name as expected";
 }
- 
+
