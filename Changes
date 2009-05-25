@@ -1,10 +1,16 @@
+0.12     Mon, 25 May 2009 19:33:30 +0100
+  * Add additional tests for role composition behavior.
+  * Add an error message if someone tries to exclude or alias methods
+    from a role with attributes, which currently doesn't work.
+  * Add tests for this error, and tests for behavior if aliasing did work.
+
 0.11_03  Mon, 25 May 2009 00:06:50 +0100
   * Fix overenthusiastic meta trait application which caused
     classes which already had methods with attributes to have their
     attributes wiped out.
 
 0.11_02  Thu, 21 May 2009 01:46:47 +0100
-  * Add support for use Moose::Role -traits => 'MethodAttributes
+  * Add support for use Moose::Role -traits => 'MethodAttributes'
     if we've already been loaded.
   * Add support for composing a role containg methods with attributes into
     another role.
