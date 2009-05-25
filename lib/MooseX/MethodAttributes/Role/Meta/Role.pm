@@ -55,13 +55,15 @@ around method_metaclass => sub {
 };
 
 around 'apply' => sub {
-    my ($orig, $self, $thing) = @_;
+    my ($orig, $self, $thing, %opts) = @_;
+    die("MooseX::MethodAttributes does not currently support method exclusion or aliasing.")
+        if ($opts{alias} or $opts{exclude});
     if ($thing->isa('Moose::Meta::Class')) {
         unless (
            does_role($thing, 'MooseX::MethodAttributes::Role::Meta::Class')
         && does_role($thing->method_metaclass, 'MooseX::MethodAttributes::Role::Meta::Method')
         && does_role($thing->wrapped_method_metaclass, 'MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped')) {
-        
+
             Moose::Util::MetaRole::apply_metaclass_roles(
                 for_class => $thing->name,
                 metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Class'],
@@ -75,14 +77,14 @@ around 'apply' => sub {
             for_class       => $thing->name,
             metaclass_roles => [ __PACKAGE__ ],
         );
-        ensure_all_roles($thing->name, 
+        ensure_all_roles($thing->name,
             'MooseX::MethodAttributes::Role::AttrContainer',
         );
     }
     else {
         croak("Composing " . __PACKAGE__ . " onto instances is unsupported");
     }
-    
+
     # Note that the metaclass instance we started out with may have been turned
     # into lies by the role application process, so we explicitly re-fetch it
     # here.
