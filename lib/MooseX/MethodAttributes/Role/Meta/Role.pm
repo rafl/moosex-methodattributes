@@ -30,6 +30,10 @@ This module allows you to add code attributes to methods in Moose roles.
 These attributes can then be found later once the methods are composed
 into a class.
 
+Note that currently roles with attributes cannot have methods excluded
+or aliased, and will in turn confer this property onto any roles they
+are composed onto.
+
 =cut
 
 with qw/
