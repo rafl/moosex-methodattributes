@@ -1,3 +1,7 @@
+0.13     Thu, 28 May 2009 01:19:00 +0100
+  * Add Test::More and Test::Exception to requirements for RT#46395
+    and RT#46396
+
 0.12     Mon, 25 May 2009 19:33:30 +0100
   * Add additional tests for role composition behavior.
   * Add an error message if someone tries to exclude or alias methods
