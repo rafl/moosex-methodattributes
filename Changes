@@ -1,3 +1,7 @@
+0.14     Sun, Jun  7 01:51:49 2009 +0100
+  * Fix bugs with composing roles with method attributes into other
+    roles with method attributes + tests
+
 0.13     Thu, 28 May 2009 01:19:00 +0100
   * Add Test::More and Test::Exception to requirements for RT#46395
     and RT#46396
