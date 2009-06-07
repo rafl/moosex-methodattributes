@@ -15,7 +15,7 @@ use MooseX::MethodAttributes ();
     use Moose::Role -traits => 'MethodAttributes';
     use namespace::clean -except => 'meta';
 
-    #with 'Bar';
+    with 'Bar';
 
     sub live :Chained(item) PathPart Args(0) { }
     sub foo :Attr { }
