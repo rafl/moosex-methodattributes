@@ -12,7 +12,7 @@ use namespace::clean -except => 'meta';
 =head1 SYNOPSIS
 
     package MyRole;
-    use Moose::Role -traits => 'MooseX::MethodAttributes::Role::Meta::Role';
+    use Moose::Role -traits => 'MethodAttributes';
 
     sub foo : Bar Baz('corge') { ... }
 
@@ -30,9 +30,23 @@ This module allows you to add code attributes to methods in Moose roles.
 These attributes can then be found later once the methods are composed
 into a class.
 
-Note that currently roles with attributes cannot have methods excluded
+=head1 CAVEATS
+
+=over
+
+=item *
+
+Currently roles with attributes cannot have methods excluded
 or aliased, and will in turn confer this property onto any roles they
 are composed onto.
+
+=item *
+
+Composing multiple roles with attributes onto a class at once will fail
+to work as expected, therefore conflict resolution cannot be taken advantage
+of.
+
+=back
 
 =cut
 
@@ -94,8 +108,8 @@ around 'apply' => sub {
     }
 
     # Note that the metaclass instance we started out with may have been turned
-    # into lies by the role application process, so we explicitly re-fetch it
-    # here.
+    # into lies by the metatrait role application process, so we explicitly
+    # re-fetch it here.
     my $meta = find_meta($thing->name);
 
     my $ret = $self->$orig($meta);
