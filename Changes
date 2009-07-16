@@ -1,3 +1,10 @@
+0.14_01  Thu, Jul 16 20:04:04 2009 +0100
+  * Add TODO tests for role combination with method attributes, proving that this doesn't work.
+
+  * Add nasty hack to allow the application of roles with method attributes to anon classes to
+    work if the user does a special handwave. This is less than optimum, see big block comment
+    in the code. :/
+
 0.14     Sun, Jun  7 01:51:49 2009 +0100
   * Fix bugs with composing roles with method attributes into other
     roles with method attributes + tests
