@@ -81,8 +81,7 @@ around 'apply' => sub {
            does_role($thing, 'MooseX::MethodAttributes::Role::Meta::Class')
         && does_role($thing->method_metaclass, 'MooseX::MethodAttributes::Role::Meta::Method')
         && does_role($thing->wrapped_method_metaclass, 'MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped')) {
-
-            Moose::Util::MetaRole::apply_metaclass_roles(
+            $thing = Moose::Util::MetaRole::apply_metaclass_roles(
                 for_class => $thing->name,
                 metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Class'],
                 method_metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Method'],
@@ -94,7 +93,7 @@ around 'apply' => sub {
         unless (
             does_role( $thing->meta->name, __PACKAGE__ )
         ) {
-            Moose::Util::MetaRole::apply_metaclass_roles(
+            $thing = Moose::Util::MetaRole::apply_metaclass_roles(
                 for_class       => $thing->name,
                 metaclass_roles => [ __PACKAGE__ ],
             );
@@ -110,13 +109,31 @@ around 'apply' => sub {
     # Note that the metaclass instance we started out with may have been turned
     # into lies by the metatrait role application process, so we explicitly
     # re-fetch it here.
-    my $meta = find_meta($thing->name);
 
-    my $ret = $self->$orig($meta);
-    
-    push @{ $meta->_method_attribute_list }, @{ $self->_method_attribute_list };
-    @{ $meta->_method_attribute_map }{ (keys(%{ $self->_method_attribute_map }), keys(%{ $meta->_method_attribute_map })) }
-        = (values(%{ $self->_method_attribute_map }), values(%{ $meta->_method_attribute_map }));
+    # Alternatively, for epic shits and giggles, the meta trait application
+    # process (onto $thing) may have applied roles to our metaclass, but (if
+    # $thing is an anon class, not correctly replaced it in the metaclass cache.
+    # This results in the DESTROY method in Class::MOP::Class r(eap|ape)ing the
+    # package, which is unfortunate, as it removes all your methods and superclasses.
+    # Therefore, we avoid that by ramming the metaclass we've just been handed into
+    # the cache without weakening it.
+
+    # I'm fairly sure the 2nd part of that is a Moose bug, and should go away..
+    # Unfortunately, the implication of that is that whenever you apply roles to a class,
+    # the metaclass instance can change, and so needs to be re-retrieved or handed back
+    # to the caller :/
+    if ($thing->can('is_anon_class') and $thing->is_anon_class) {
+        Class::MOP::store_metaclass_by_name($thing->name, $thing);
+    }
+    else {
+        $thing = find_meta($thing->name);
+    }
+
+    my $ret = $self->$orig($thing);
+
+    push @{ $thing->_method_attribute_list }, @{ $self->_method_attribute_list };
+    @{ $thing->_method_attribute_map }{ (keys(%{ $self->_method_attribute_map }), keys(%{ $thing->_method_attribute_map })) }
+        = (values(%{ $self->_method_attribute_map }), values(%{ $thing->_method_attribute_map }));
 
     return $ret;
 };
