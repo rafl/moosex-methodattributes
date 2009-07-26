@@ -3,7 +3,8 @@ use warnings;
 use Moose::Util qw/find_meta/;
 use Moose::Meta::Class;
 use MooseX::MethodAttributes ();
-use Test::More tests => 6;
+use Test::More tests => 9;
+use MRO::Compat;
 
 {
     package My::Role;
@@ -32,7 +33,11 @@ my $other_meta = find_meta($meta->name);
 
 ok $other_meta;
 my $classname = $other_meta->name;
-isa_ok $classname, 'My::SuperClass';
+isa_ok $classname->new, 'My::SuperClass';
+isa_ok $classname->new, 'Moose::Object';
+my @mro = @{ mro::get_linear_isa($classname) };
+is $mro[1], 'My::SuperClass';
+is $mro[2], 'Moose::Object';
 ok $classname->can('foo');
 ok $classname->can('new');
 ok $classname->can('bar');
