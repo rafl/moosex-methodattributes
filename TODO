@@ -1,5 +1,3 @@
  * Test overriding methods from roles with no attribute in otherwise
    non MX::MethodAttributes using code.
- * Test methods with attributes in a role which is composed onto another
-   role, which is then composed onto a class.
 
