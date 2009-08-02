@@ -7,6 +7,8 @@ use Carp qw/croak/;
 
 use Moose::Role;
 
+use aliased 'MooseX::MethodAttributes::Role::Meta::Role::Application::Summation';
+
 use namespace::clean -except => 'meta';
 
 =head1 SYNOPSIS
@@ -96,6 +98,7 @@ around 'apply' => sub {
             $thing = Moose::Util::MetaRole::apply_metaclass_roles(
                 for_class       => $thing->name,
                 metaclass_roles => [ __PACKAGE__ ],
+				application_role_summation_class_roles => [ Summation ],
             );
         }
         ensure_all_roles($thing->name,
