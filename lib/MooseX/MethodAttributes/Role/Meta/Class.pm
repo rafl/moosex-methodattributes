@@ -107,22 +107,10 @@ foreach my $type (qw/after before around/) {
         my $orig = shift;
         my $meta = shift;
         my ($method_name) = @_;
-    
-        unless(
-            does_role($meta, 'MooseX::MethodAttributes::Role::Meta::Class')
-            && does_role($meta->method_metaclass, 'MooseX::MethodAttributes::Role::Meta::Method')
-            && does_role($meta->wrapped_method_metaclass, 'MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped')
-        ) {
-    
-            Moose::Util::MetaRole::apply_metaclass_roles(
-                for_class                      => $meta->name,
-                metaclass_roles                => ['MooseX::MethodAttributes::Role::Meta::Class'],
-                method_metaclass_roles         => ['MooseX::MethodAttributes::Role::Meta::Method'],
-                wrapped_method_metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped'],
-            );
-            # Get replaced metaclass..
-            $meta = find_meta($meta->name);
-        }
+
+		# Ensure the correct metaclass
+        $meta = MooseX::MethodAttributes->init_meta( for_class => $meta->name );
+
         my $code = $meta->$orig(@_);
         my $method = $meta->get_method($method_name);
         if (

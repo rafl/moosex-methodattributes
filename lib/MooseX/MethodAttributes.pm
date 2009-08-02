@@ -43,7 +43,7 @@ sub init_meta {
 	my $for_class = $options{for_class};
     my $meta = find_meta($for_class);
 
-    return if $meta
+    return $meta if $meta
         && does_role($meta, 'MooseX::MethodAttributes::Role::Meta::Class')
         && does_role($meta->method_metaclass, 'MooseX::MethodAttributes::Role::Meta::Method')
         && does_role($meta->wrapped_method_metaclass, 'MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped');
