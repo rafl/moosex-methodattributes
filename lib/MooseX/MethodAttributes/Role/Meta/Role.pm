@@ -84,7 +84,7 @@ around 'apply' => sub {
     die("MooseX::MethodAttributes does not currently support method exclusion or aliasing.")
         if ($opts{alias} or $opts{exclude});
     $thing = $self->_apply_metaclasses($thing);
-    my $ret = $self->$orig($thing);
+    my $ret = $self->$orig($thing, %opts);
     $self->_copy_attributes($thing);
     return $ret;
 };
