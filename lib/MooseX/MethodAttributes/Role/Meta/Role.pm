@@ -7,7 +7,8 @@ use Carp qw/croak/;
 
 use Moose::Role;
 
-use aliased 'MooseX::MethodAttributes::Role::Meta::Role::Application::Summation';
+use MooseX::MethodAttributes ();
+use MooseX::MethodAttributes::Role ();
 
 use namespace::clean -except => 'meta';
 
@@ -52,6 +53,10 @@ of.
 
 =cut
 
+has '+composition_class_roles' => (
+    default => [ 'MooseX::MethodAttributes::Role::Meta::Role::Application::Summation' ],
+);
+
 with qw/
     MooseX::MethodAttributes::Role::Meta::Map
 /;
@@ -76,34 +81,19 @@ around method_metaclass => sub {
 
 around 'apply' => sub {
     my ($orig, $self, $thing, %opts) = @_;
+    $self->_around_apply($orig, $thing, %opts);
+};
+    
+sub _around_apply {
+    my ($self, $orig, $thing, %opts) = @_;
+	warn("Apply HERE");
     die("MooseX::MethodAttributes does not currently support method exclusion or aliasing.")
         if ($opts{alias} or $opts{exclude});
     if ($thing->isa('Moose::Meta::Class')) {
-        unless (
-           does_role($thing, 'MooseX::MethodAttributes::Role::Meta::Class')
-        && does_role($thing->method_metaclass, 'MooseX::MethodAttributes::Role::Meta::Method')
-        && does_role($thing->wrapped_method_metaclass, 'MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped')) {
-            $thing = Moose::Util::MetaRole::apply_metaclass_roles(
-                for_class => $thing->name,
-                metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Class'],
-                method_metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Method'],
-                wrapped_method_metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped'],
-            );
-        }
+        $thing = MooseX::MethodAttributes->init_meta( for_class => $thing->name );
     }
     elsif ($thing->isa('Moose::Meta::Role')) {
-        unless (
-            does_role( $thing->meta->name, __PACKAGE__ )
-        ) {
-            $thing = Moose::Util::MetaRole::apply_metaclass_roles(
-                for_class       => $thing->name,
-                metaclass_roles => [ __PACKAGE__ ],
-				application_role_summation_class_roles => [ Summation ],
-            );
-        }
-        ensure_all_roles($thing->name,
-            'MooseX::MethodAttributes::Role::AttrContainer',
-        );
+        $thing = MooseX::MethodAttributes::Role->init_meta( for_class => $thing->name );
     }
     else {
         croak("Composing " . __PACKAGE__ . " onto instances is unsupported");
