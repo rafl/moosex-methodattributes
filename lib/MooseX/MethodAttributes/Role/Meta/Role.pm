@@ -43,12 +43,6 @@ Currently roles with attributes cannot have methods excluded
 or aliased, and will in turn confer this property onto any roles they
 are composed onto.
 
-=item *
-
-Composing multiple roles with attributes onto a class at once will fail
-to work as expected, therefore conflict resolution cannot be taken advantage
-of.
-
 =back
 
 =cut
