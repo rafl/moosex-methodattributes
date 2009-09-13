@@ -129,7 +129,7 @@ around 'apply' => sub {
         $thing = find_meta($thing->name);
     }
 
-    my $ret = $self->$orig($thing);
+    my $ret = $self->$orig($thing, %opts);
 
     push @{ $thing->_method_attribute_list }, @{ $self->_method_attribute_list };
     @{ $thing->_method_attribute_map }{ (keys(%{ $self->_method_attribute_map }), keys(%{ $thing->_method_attribute_map })) }

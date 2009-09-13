@@ -1,3 +1,6 @@
+  * Fix so that MooseX::Role::Parameterized can be used in combination with roles
+    containing method attributes + testcase from phaylon (RT#48758)
+
 0.15     Sun, Jul 26 18:02:05 2009 +0100
   * Fix test which was failing in some cases and additional test cases.
 
