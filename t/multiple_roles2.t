@@ -38,23 +38,19 @@ Moose::Meta::Class->create("MyClass",
     roles => ["Bar", "Foo"],
 );
 
-TODO: {
-    local $TODO = 'Does not work yet';
-    SKIP: {
-        ok MyClass->meta->can('get_all_methods_with_attributes')
-            or skip 'Role combination and method attributes known broken', 1;
 
-        my @methods;
-        for my $method (sort { $a->name cmp $b->name } MyClass->meta->get_all_methods_with_attributes) {
-            push(@methods, $method->name . " :" . join("|", @{ $method->attributes }));
-        }
+ok MyClass->meta->can('get_all_methods_with_attributes')
+    or skip 'Role combination and method attributes known broken', 1;
 
-        is_deeply \@methods, [
-            'foo :Attr',
-            'item :Chained(/app/root)|PathPrefix|CaptureArgs(1)',
-            'live :Chained(item)|PathPart|Args(0)',
-            'other :Attr',
-        ], 'methods with expected attributes found';
-    }
+my @methods;
+for my $method (sort { $a->name cmp $b->name } MyClass->meta->get_all_methods_with_attributes) {
+    push(@methods, $method->name . " :" . join("|", @{ $method->attributes }));
 }
+
+is_deeply \@methods, [
+    'foo :Attr',
+    'item :Chained(/app/root)|PathPrefix|CaptureArgs(1)',
+    'live :Chained(item)|PathPart|Args(0)',
+    'other :Attr',
+], 'methods with expected attributes found';
 

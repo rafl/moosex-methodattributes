@@ -48,7 +48,7 @@ sub init_meta {
 
     $meta = Moose::Meta::Role->initialize( $for_class )
         unless $meta;
-warn("Apply application_role_summation_class_roles to " . $meta->name);
+
     $meta = Moose::Util::MetaRole::apply_metaclass_roles(
             for_class       => $meta->name,
             metaclass_roles => [ 'MooseX::MethodAttributes::Role::Meta::Role' ],

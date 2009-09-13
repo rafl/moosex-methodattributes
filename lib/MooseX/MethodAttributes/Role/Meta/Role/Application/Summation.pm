@@ -4,12 +4,16 @@ use namespace::clean -except => 'meta';
 
 around 'apply' => sub {
     my ($orig, $self, $thing, %opts) = @_;
-    warn("Am being applied to " . $thing->name);
-    $self->MooseX::MethodAttributes::Role::Meta::Role::_around_apply($orig, $thing, %opts);
+    $thing = $self->MooseX::MethodAttributes::Role::Meta::Role::_apply_metaclasses($thing);
+    my $ret = $self->$orig($thing);
+
+    for my $role (@{ $self->get_roles }) {
+        $role->MooseX::MethodAttributes::Role::Meta::Role::_copy_attributes($thing)
+            if $role->can('_method_attribute_list');
+    }
+
+    return $ret;
+     
 };
-
-sub _method_attribute_list { [] }
-
-sub _method_attribute_map { {} }
 
 1;

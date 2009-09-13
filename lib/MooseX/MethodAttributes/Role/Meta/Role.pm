@@ -81,14 +81,16 @@ around method_metaclass => sub {
 
 around 'apply' => sub {
     my ($orig, $self, $thing, %opts) = @_;
-    $self->_around_apply($orig, $thing, %opts);
-};
-    
-sub _around_apply {
-    my ($self, $orig, $thing, %opts) = @_;
-	warn("Apply HERE");
     die("MooseX::MethodAttributes does not currently support method exclusion or aliasing.")
         if ($opts{alias} or $opts{exclude});
+    $thing = $self->_apply_metaclasses($thing);
+    my $ret = $self->$orig($thing);
+    $self->_copy_attributes($thing);
+    return $ret;
+};
+
+sub _apply_metaclasses {
+    my ($self, $thing) = @_;
     if ($thing->isa('Moose::Meta::Class')) {
         $thing = MooseX::MethodAttributes->init_meta( for_class => $thing->name );
     }
@@ -119,16 +121,17 @@ sub _around_apply {
         Class::MOP::store_metaclass_by_name($thing->name, $thing);
     }
     else {
-        $thing = find_meta($thing->name);
+        return find_meta($thing->name);
     }
+    return $thing;
+}
 
-    my $ret = $self->$orig($thing);
+sub _copy_attributes {
+    my ($self, $thing) = @_;
 
     push @{ $thing->_method_attribute_list }, @{ $self->_method_attribute_list };
     @{ $thing->_method_attribute_map }{ (keys(%{ $self->_method_attribute_map }), keys(%{ $thing->_method_attribute_map })) }
         = (values(%{ $self->_method_attribute_map }), values(%{ $thing->_method_attribute_map }));
-
-    return $ret;
 };
 
 package # Hide from PAUSE
