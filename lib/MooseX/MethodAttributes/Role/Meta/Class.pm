@@ -19,7 +19,7 @@ attributes in the order they have been registered.
 
 sub get_method_with_attributes_list {
     my ($self) = @_;
-    my @methods = values %{ $self->get_method_map };
+    my @methods = map { $self->get_method($_) } $self->get_method_list;
     my %order;
 
     {

@@ -1,3 +1,7 @@
+0.14
+  * Fixes to avoid a deprecation warning from the latest Class::MOP (Dave
+    Rolsky)
+
 0.13     Thu, 28 May 2009 01:19:00 +0100
   * Add Test::More and Test::Exception to requirements for RT#46395
     and RT#46396
