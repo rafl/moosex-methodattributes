@@ -1,3 +1,4 @@
+0.16     Tue, 15 Sep 2009 07:58:14 +0200
   * Fix so that MooseX::Role::Parameterized can be used in combination with roles
     containing method attributes + testcase from phaylon (RT#48758)
   * Fixes to avoid a deprecation warning from the latest Class::MOP (Dave
