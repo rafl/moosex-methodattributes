@@ -1,5 +1,4 @@
 package OtherRoleWithAttributes;
-use Moose::Role;
 use MooseX::MethodAttributes::Role;
 use namespace::clean -except => 'meta';
 

@@ -4,6 +4,9 @@ use MooseX::MethodAttributes ();
 
 use Test::More tests => 2;
 
+# This tests the 'old' form of using MooseX::MethodAttributes with -traits => 'MethodAttributes'
+# The new (and nicer) way is to just say use MooseX::MethodAttributes::Role
+
 {
     package Bar;
     use Moose::Role -traits => 'MethodAttributes';

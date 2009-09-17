@@ -9,6 +9,9 @@ use Test::More tests => 4;
 
 use MooseX::MethodAttributes ();
 
+# Note - these test classes say use MooseX::MethodAttributes::Role, which is the new 'nicer'
+#        way of doing things.
+
 use UsesMultipleRoles;
 
 my $meta = UsesMultipleRoles->meta;
