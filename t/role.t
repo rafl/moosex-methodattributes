@@ -5,7 +5,7 @@ use warnings;
 use FindBin qw/$Bin/;
 use lib "$Bin/lib";
 
-use Moose::Util qw/does_role/;
+use Moose::Util qw/find_meta does_role/;
 
 use Test::More tests => 4;
 
@@ -13,7 +13,7 @@ use MooseX::MethodAttributes ();
 
 use RoleWithAttributes;
 
-my $meta = RoleWithAttributes->meta;
+my $meta = find_meta('RoleWithAttributes');
 isa_ok($meta, 'Moose::Meta::Role');
 ok does_role($meta, 'MooseX::MethodAttributes::Role::Meta::Role'),
     'Role metaclass does the role for metaclasses with attribute decorated methods';
