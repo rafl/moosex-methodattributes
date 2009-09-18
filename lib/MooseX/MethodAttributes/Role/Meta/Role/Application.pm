@@ -7,6 +7,22 @@ use MooseX::MethodAttributes ();
 use MooseX::MethodAttributes::Role ();
 use namespace::clean -except => 'meta';
 
+requires qw/
+    _copy_attributes
+    apply
+/;
+
+around 'apply' => sub {
+    my ($orig, $self, $thing, %opts) = @_;
+    $thing = $self->_apply_metaclasses($thing);
+
+    my $ret = $self->$orig($thing, %opts);
+
+    $self->_copy_attributes($thing);
+
+    return $ret;
+};
+
 sub _apply_metaclasses {
     my ($self, $thing) = @_;
     if ($thing->isa('Moose::Meta::Class')) {

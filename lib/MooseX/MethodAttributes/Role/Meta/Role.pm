@@ -74,20 +74,6 @@ around method_metaclass => sub {
     )->name();
 };
 
-around 'apply' => sub {
-    my ($orig, $self, $thing, %opts) = @_;
-    die("MooseX::MethodAttributes does not currently support method exclusion or aliasing.")
-        if ($opts{alias} or $opts{exclude});
-    $thing = $self->_apply_metaclasses($thing);
-    my $ret = $self->$orig($thing, %opts);
-    $self->_copy_attributes($thing);
-    return $ret;
-};
-
-#requires qw/
-#    _method_attribute_list
-#    _method_attribute_map
-#/;
 
 sub _copy_attributes {
     my ($self, $thing) = @_;
