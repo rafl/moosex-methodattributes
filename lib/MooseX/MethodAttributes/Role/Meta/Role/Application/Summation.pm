@@ -2,6 +2,8 @@ package MooseX::MethodAttributes::Role::Meta::Role::Application::Summation;
 use Moose::Role;
 use namespace::clean -except => 'meta';
 
+with 'MooseX::MethodAttributes::Role::Meta::Role::Application';
+
 around 'apply' => sub {
     my ($orig, $self, $thing, %opts) = @_;
     $thing = $self->MooseX::MethodAttributes::Role::Meta::Role::_apply_metaclasses($thing);

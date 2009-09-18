@@ -47,13 +47,14 @@ are composed onto.
 
 =cut
 
+with qw/
+    MooseX::MethodAttributes::Role::Meta::Map
+    MooseX::MethodAttributes::Role::Meta::Role::Application
+/;
+
 has '+composition_class_roles' => (
     default => [ 'MooseX::MethodAttributes::Role::Meta::Role::Application::Summation' ],
 );
-
-with qw/
-    MooseX::MethodAttributes::Role::Meta::Map
-/;
 
 after 'initialize' => sub {
     my ($self, $class, %args) = @_;
