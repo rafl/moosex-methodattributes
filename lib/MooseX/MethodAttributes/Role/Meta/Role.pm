@@ -121,14 +121,6 @@ sub _apply_metaclasses {
     return $thing;
 }
 
-sub _copy_attributes {
-    my ($self, $thing) = @_;
-
-    push @{ $thing->_method_attribute_list }, @{ $self->_method_attribute_list };
-    @{ $thing->_method_attribute_map }{ (keys(%{ $self->_method_attribute_map }), keys(%{ $thing->_method_attribute_map })) }
-        = (values(%{ $self->_method_attribute_map }), values(%{ $thing->_method_attribute_map }));
-};
-
 package # Hide from PAUSE
     Moose::Meta::Role::Custom::Trait::MethodAttributes;
 
