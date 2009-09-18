@@ -8,6 +8,7 @@ with 'MooseX::MethodAttributes::Role::Meta::Role::Application';
 around 'apply' => sub {
     my ($orig, $self, $thing, %opts) = @_;
     $thing = $self->_apply_metaclasses($thing);
+
     my $ret = $self->$orig($thing);
 
     for my $role (@{ $self->get_roles }) {

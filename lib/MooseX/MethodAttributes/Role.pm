@@ -50,9 +50,6 @@ sub init_meta {
     $meta = Moose::Util::MetaRole::apply_metaclass_roles(
             for_class       => $meta->name,
             metaclass_roles => [ 'MooseX::MethodAttributes::Role::Meta::Role' ],
-            application_to_class_class_roles    => [ 'MooseX::MethodAttributes::Role::Meta::Role::Application::ToClass' ],
-            application_to_role_class_roles     => [ 'MooseX::MethodAttributes::Role::Meta::Role::Application::ToRole' ],
-            application_to_instance_class_roles => [ 'MooseX::MethodAttributes::Role::Meta::Role::Application::ToInstance' ],
     );
 
     ensure_all_roles($meta->name,
