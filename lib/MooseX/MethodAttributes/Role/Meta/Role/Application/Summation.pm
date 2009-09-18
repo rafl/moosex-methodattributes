@@ -11,13 +11,18 @@ around 'apply' => sub {
 
     my $ret = $self->$orig($thing);
 
-    for my $role (@{ $self->get_roles }) {
-        $role->_copy_attributes($thing)
-            if does_role($role, 'MooseX::MethodAttributes::Role::Meta::Role');
-    }
+    $self->_copy_attributes($thing);
 
     return $ret;
      
 };
+
+sub _copy_attributes {
+    my ($self, $thing) = @_;
+    for my $role (@{ $self->get_roles }) {
+        $role->_copy_attributes($thing)
+            if does_role($role, 'MooseX::MethodAttributes::Role::Meta::Role');
+    }
+}
 
 1;
