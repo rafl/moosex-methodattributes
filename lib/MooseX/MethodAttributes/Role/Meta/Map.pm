@@ -1,5 +1,5 @@
 package MooseX::MethodAttributes::Role::Meta::Map;
-# ABSTRACT: role for storing code attributes
+# ABSTRACT: generic role for storing code attributes used by classes and roles with attributes
 
 use Moose::Role;
 use MooseX::Types::Moose qw/HashRef ArrayRef Str Int/;

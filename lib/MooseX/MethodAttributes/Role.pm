@@ -14,8 +14,6 @@ use MooseX::MethodAttributes::Role::Meta::Role ();
 =head1 SYNOPSIS
 
     package MyRole;
-
-    use Moose::Role;
     use MooseX::MethodAttributes::Role;
 
     sub foo : Bar Baz('corge') { ... }
@@ -24,8 +22,8 @@ use MooseX::MethodAttributes::Role::Meta::Role ();
 
 =head1 DESCRIPTION
 
-This module allows code attributes of methods to be introspected using Moose
-meta method objects.
+This module allows you to write a Moose Role with code attributes of methods to
+be introspected using Moose meta method objects.
 
 =begin Pod::Coverage
 
