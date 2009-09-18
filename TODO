@@ -1,3 +1,4 @@
  * Test overriding methods from roles with no attribute in otherwise
    non MX::MethodAttributes using code.
-
+ * Test that applying a role to otherwise non methodattributes using code works correctly
+ * Finish docs in new classes.

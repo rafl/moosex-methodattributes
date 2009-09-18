@@ -1,3 +1,8 @@
+0.16_01  Fri, 18 Sep 2009 02:29:38 +0100
+  * Combining roles now works as expected when writing roles, or when applying
+    multiple roles to a class
+  * Bump other dependencies in line with required Moose version
+
 0.16     Tue, 15 Sep 2009 07:58:14 +0200
   * Fix so that MooseX::Role::Parameterized can be used in combination with roles
     containing method attributes + testcase from phaylon (RT#48758)
