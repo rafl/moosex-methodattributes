@@ -1,4 +1,6 @@
 package MooseX::MethodAttributes::Role::Meta::Role::Application::Summation;
+# ABSTRACT: Role applied to the class responsible for role summation which ensures method attributes propagate from the roles being summed onto the combined role.
+
 use Moose::Role;
 use Moose::Util qw/does_role/;
 use namespace::clean -except => 'meta';

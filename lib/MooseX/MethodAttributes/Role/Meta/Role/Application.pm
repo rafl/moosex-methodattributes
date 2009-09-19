@@ -12,6 +12,15 @@ requires qw/
     apply
 /;
 
+=metahod apply
+
+The apply method is wrapped to ensure that the correct metaclasses to hold and propagate
+method attribute data are present on the target for role application, delegates to
+the original method to actually apply the role, then ensures that any attributes from
+the role are copied to the target class.
+
+=cut
+
 around 'apply' => sub {
     my ($orig, $self, $thing, %opts) = @_;
     $thing = $self->_apply_metaclasses($thing);

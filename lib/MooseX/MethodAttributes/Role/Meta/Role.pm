@@ -15,8 +15,8 @@ use namespace::clean -except => 'meta';
 =head1 SYNOPSIS
 
     package MyRole;
-    use Moose::Role -traits => 'MethodAttributes';
-
+    use MooseX::MethodAttributes::Role;
+    
     sub foo : Bar Baz('corge') { ... }
 
     package MyClass
@@ -28,10 +28,11 @@ use namespace::clean -except => 'meta';
 
 =head1 DESCRIPTION
 
-This module allows you to add code attributes to methods in Moose roles.
+This module is a metaclass role which is applied by L<MooseX::MethodAttributes::Role>, allowing
+you to add code attributes to methods in Moose roles.
 
-These attributes can then be found later once the methods are composed
-into a class.
+These attributes can then be found by introspecting the role metaclass, and are automatically copied
+into any classes or roles that the role is composed onto.
 
 =head1 CAVEATS
 
@@ -56,11 +57,30 @@ has '+composition_class_roles' => (
     default => [ 'MooseX::MethodAttributes::Role::Meta::Role::Application::Summation' ],
 );
 
+=method initialize
+
+Ensures that the package containing the role methods does the
+L<MooseX::MethodAttributes::Role::AttrContainer> role during initialisation,
+which in turn is responsible for capturing the method attributes on the class
+and registering them with the metaclass.
+
+=cut
+
 after 'initialize' => sub {
     my ($self, $class, %args) = @_;
     ensure_all_roles($class, 'MooseX::MethodAttributes::Role::AttrContainer');
 };
 
+=method method_metaclass
+
+Wraps the normal method and ensures that the method metaclass performs the
+L<MooseX::MethodAttributes::Role::Meta::Method> role, which allows you to
+introspect the attributes from the method objects returned by the MOP when
+querying the metaclass.
+
+=cut
+
+# FIXME - Skip this logic if the method metaclass already does the right role?
 around method_metaclass => sub {
     my $orig = shift;
     my $self = shift;
@@ -83,6 +103,9 @@ sub _copy_attributes {
         = (values(%{ $self->_method_attribute_map }), values(%{ $thing->_method_attribute_map }));
 };
 
+# This allows you to say use Moose::Role -traits => 'MethodAttributes'
+# This is replaced by MooseX::MethodAttributes::Role, and this trait registration
+# is now only present for backwards compatibility reasons.
 package # Hide from PAUSE
     Moose::Meta::Role::Custom::Trait::MethodAttributes;
 
