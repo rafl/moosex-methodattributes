@@ -1,3 +1,6 @@
+0.16_02  Sun, 20 Sep 2009 17:58:38 +0100
+  * Also export the Moose::Role sugar from MooseX::MethodAttributes::Role
+
 0.16_01  Fri, 18 Sep 2009 02:29:38 +0100
   * Combining roles now works as expected when writing roles, or when applying
     multiple roles to a class
