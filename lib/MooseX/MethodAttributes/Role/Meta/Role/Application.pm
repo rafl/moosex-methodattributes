@@ -12,7 +12,7 @@ requires qw/
     apply
 /;
 
-=metahod apply
+=method apply
 
 The apply method is wrapped to ensure that the correct metaclasses to hold and propagate
 method attribute data are present on the target for role application, delegates to
