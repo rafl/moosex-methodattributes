@@ -1,3 +1,7 @@
+0.17    Wed, 23 Sep 2009 15:35:50 +0100
+  * Bump MooseX::Types version to 0.20 to avoid warnings with newer
+    Moose releases
+
 0.16_02  Sun, 20 Sep 2009 17:58:38 +0100
   * Also export the Moose::Role sugar from MooseX::MethodAttributes::Role
 
