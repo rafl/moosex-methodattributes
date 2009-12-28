@@ -53,9 +53,10 @@ with qw/
     MooseX::MethodAttributes::Role::Meta::Role::Application
 /;
 
-has '+composition_class_roles' => (
-    default => sub { [ 'MooseX::MethodAttributes::Role::Meta::Role::Application::Summation' ] },
-);
+around composition_class_roles => sub {
+    my ($orig, $self) = @_;
+    return $self->$orig, 'MooseX::MethodAttributes::Role::Meta::Role::Application::Summation';
+};
 
 =method initialize
 
