@@ -54,7 +54,7 @@ with qw/
 /;
 
 has '+composition_class_roles' => (
-    default => [ 'MooseX::MethodAttributes::Role::Meta::Role::Application::Summation' ],
+    default => sub { [ 'MooseX::MethodAttributes::Role::Meta::Role::Application::Summation' ] },
 );
 
 =method initialize
