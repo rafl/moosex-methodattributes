@@ -1,3 +1,6 @@
+  * Adapt to changes in in composition_class roles
+    in new Moose releases (>= 0.93_01)
+
 0.18    Fri, 25 Sep 2009 10:51:24 +0100
   * Bump Test::More dependency to 0.88 for done_testing
   * Require namespace::autoclean for t/late_reinitialize.t
