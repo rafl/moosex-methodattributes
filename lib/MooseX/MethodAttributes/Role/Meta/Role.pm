@@ -1,6 +1,7 @@
 package MooseX::MethodAttributes::Role::Meta::Role;
 # ABSTRACT: metarole role for storing code attributes
 
+use Moose ();
 use Moose::Util::MetaRole;
 use Moose::Util qw/find_meta does_role ensure_all_roles/;
 use Carp qw/croak/;
@@ -53,10 +54,15 @@ with qw/
     MooseX::MethodAttributes::Role::Meta::Role::Application
 /;
 
-around composition_class_roles => sub {
-    my ($orig, $self) = @_;
-    return $self->$orig, 'MooseX::MethodAttributes::Role::Meta::Role::Application::Summation';
-};
+$Moose::VERSION >= 0.9301
+    ? around composition_class_roles => sub {
+        my ($orig, $self) = @_;
+        return $self->$orig,
+            'MooseX::MethodAttributes::Role::Meta::Role::Application::Summation';
+    }
+    : has '+composition_class_roles' => (
+        default => sub { [ 'MooseX::MethodAttributes::Role::Meta::Role::Application::Summation' ] },
+    );
 
 =method initialize
 
