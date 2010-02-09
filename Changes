@@ -1,3 +1,7 @@
+  * Remove horrible code and epic comment working around Moose bugs
+    with reinitializing anon classes now that the bug is fixed upstream
+    in Moose (commit cf600c83).
+
 0.19    Sat, 09 Jan 2010 17:29:00 +0000
   * Adapt to changes in in composition_class roles
     in new Moose releases (>= 0.93_01)
