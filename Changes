@@ -1,3 +1,4 @@
+0.20   Wed, 10 Feb 2010 00:46:11 +0000
   * Remove horrible code and epic comment working around Moose bugs
     with reinitializing anon classes now that the bug is fixed upstream
     in Moose (commit cf600c83).
