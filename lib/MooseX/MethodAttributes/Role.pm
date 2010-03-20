@@ -1,6 +1,3 @@
-use strict;
-use warnings;
-
 package MooseX::MethodAttributes::Role;
 # ABSTRACT: code attribute introspection
 
