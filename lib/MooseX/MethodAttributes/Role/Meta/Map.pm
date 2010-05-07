@@ -2,7 +2,7 @@ package MooseX::MethodAttributes::Role::Meta::Map;
 # ABSTRACT: generic role for storing code attributes used by classes and roles with attributes
 
 use Moose::Role;
-use MooseX::Types::Moose qw/HashRef ArrayRef Str Int/;
+use MooseX::Types::Moose 0.20 qw/HashRef ArrayRef Str Int/;
 
 use namespace::clean -except => 'meta';
 
