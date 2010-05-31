@@ -108,9 +108,6 @@ foreach my $type (qw/after before around/) {
         my $meta = shift;
         my ($method_name) = @_;
 
-		# Ensure the correct metaclass
-        $meta = MooseX::MethodAttributes->init_meta( for_class => $meta->name );
-
         my $code = $meta->$orig(@_);
         my $method = $meta->get_method($method_name);
         if (
