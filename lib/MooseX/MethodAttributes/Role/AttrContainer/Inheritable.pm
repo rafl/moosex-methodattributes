@@ -19,7 +19,7 @@ with 'MooseX::MethodAttributes::Role::AttrContainer';
 before MODIFY_CODE_ATTRIBUTES => sub {
     my ($class, $code, @attrs) = @_;
     return unless @attrs;
-	MooseX::MethodAttributes->init_meta( for_class => $class );
+    MooseX::MethodAttributes->init_meta( for_class => $class );
 };
 
 1;
