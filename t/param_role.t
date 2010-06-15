@@ -20,7 +20,7 @@ role {
         my ($self, $should_be) = @_;
         package main;
         is $p->foo, $should_be, 'parameter is correct';
-    };  
+    };
 };
 
 package UseFoo;

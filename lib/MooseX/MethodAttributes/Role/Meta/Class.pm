@@ -84,7 +84,7 @@ For example, given:
 
     after bar => sub {}
 
-C<< SubClass->meta->get_all_methods_with_attributes >> will return 
+C<< SubClass->meta->get_all_methods_with_attributes >> will return
 C<< BaseClass->meta->get_method('foo') >> for the above example, but
 this method will not, and will return the wrapped bar method, wheras
 C<< get_all_methods_with_attributes >> will return the original method.

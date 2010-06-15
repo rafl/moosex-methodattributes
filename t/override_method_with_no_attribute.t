@@ -25,6 +25,6 @@ is $bar_method, TestClass->meta->get_method('bar');
 my @methods_filtered = SubClass->meta->get_nearest_methods_with_attributes;
 is( scalar(@methods_filtered), (scalar(@methods)-1) );
 
-my $no_bar_method = (grep { $_->name eq 'bar' } @methods_filtered)[0]; 
+my $no_bar_method = (grep { $_->name eq 'bar' } @methods_filtered)[0];
 is $no_bar_method, undef;
 

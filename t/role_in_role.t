@@ -9,7 +9,7 @@ use MooseX::MethodAttributes ();
 
     our $FOO_CALLED = 0;
     sub foo : Local { $FOO_CALLED++; }
-    
+
     our $BAR_CALLED = 0;
     sub bar : Local { $BAR_CALLED++; }
 
@@ -52,13 +52,13 @@ foreach my $class (qw/FirstRole SecondRole MyClass/) {
             (
                 $method->meta->does_role('MooseX::MethodAttributes::Role::Meta::Method')
                 or $method->meta->does_role('MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped')
-            ), 
+            ),
             sprintf(
                 'Method metaclass for %s in %s does role'
                 => $method_name, $class
             )
         );
-    }   
+    }
 }
 
 foreach my $method_name (@method_names) {

@@ -15,7 +15,7 @@ use warnings;
     sub get_attribute : Local { $TestApp::Controller::Moose::GET_ATTRIBUTE_CALLED++ }
 
     sub get_foo : Local { $TestApp::Controller::Moose::GET_FOO_CALLED++ }
-    
+
     # Exactly the same as last test except for modifier here
     before 'get_foo' => sub { $TestApp::Controller::Moose::BEFORE_GET_FOO_CALLED++ };
     sub other : Local {}
@@ -51,7 +51,7 @@ use Test::Exception;
 {
     my $method = TestApp::Controller::Moose->meta->get_method('get_foo');
     ok $method->meta->does_role('MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped'), 'Method metaclass for get_foo in ::Moose does role MaybeWrapped';
-    
+
     $method = TestApp::Controller::Moose::MethodModifiers->meta->get_method('other');
     ok $method->meta->does_role('MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped'), 'Method metaclass for other in ::Moose::MethodModifiers does role MaybeWrapped'
 }

@@ -17,7 +17,7 @@ use namespace::clean -except => 'meta';
 
     package MyRole;
     use MooseX::MethodAttributes::Role;
-    
+
     sub foo : Bar Baz('corge') { ... }
 
     package MyClass
