@@ -1,3 +1,6 @@
+0.23  Tue, 15 June 2010 20:22:00 +0100
+ * Fix dependency on MooseX::Types::Moose (RT#58406)
+
 0.22  Mon, 31 May 2010 20:49:00 +0100
  * Fix issues causing composing multiple (normal) roles onto a subclass of a
    MooseX::MethodAttributes class to fail by removing a forced metaclass
