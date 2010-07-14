@@ -44,9 +44,11 @@ sub init_meta {
     $meta = Moose::Meta::Role->initialize( $for_class )
         unless $meta;
 
-    $meta = Moose::Util::MetaRole::apply_metaclass_roles(
-            for_class       => $meta->name,
-            metaclass_roles => [ 'MooseX::MethodAttributes::Role::Meta::Role' ],
+    $meta = Moose::Util::MetaRole::apply_metaroles(
+        for            => $meta->name,
+        role_metaroles => {
+            role => ['MooseX::MethodAttributes::Role::Meta::Role'],
+        },
     );
 
     ensure_all_roles($meta->name,
