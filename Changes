@@ -1,3 +1,5 @@
+ * Updated to avoid warnings from Moose 1.09 (Dave Rolsky).
+
 0.23  Tue, 15 June 2010 20:22:00 +0100
  * Fix dependency on MooseX::Types::Moose (RT#58406)
 

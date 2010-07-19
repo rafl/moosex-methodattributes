@@ -48,14 +48,16 @@ sub init_meta {
     $meta = Moose::Meta::Class->initialize( $for_class )
         unless $meta;
 
-    $meta = Moose::Util::MetaRole::apply_metaclass_roles(
-        for_class                      => $for_class,
-        metaclass_roles                => ['MooseX::MethodAttributes::Role::Meta::Class'],
-        method_metaclass_roles         => ['MooseX::MethodAttributes::Role::Meta::Method'],
-        wrapped_method_metaclass_roles => ['MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped'],
+    $meta = Moose::Util::MetaRole::apply_metaroles(
+        for             => $for_class,
+        class_metaroles => {
+            class  => ['MooseX::MethodAttributes::Role::Meta::Class'],
+            method => ['MooseX::MethodAttributes::Role::Meta::Method'],
+            wrapped_method => [
+                'MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped'],
+        },
     );
 
-    $for_class = $meta->name;
     Moose::Util::MetaRole::apply_base_class_roles(
         for_class => $for_class,
         roles     => ['MooseX::MethodAttributes::Role::AttrContainer'],
